@@ -33,20 +33,20 @@ Emily has just bought a new car and wants to customize it with various modificat
 - **Community Feedback**: Input and advice from other car enthusiasts regarding modification plans and progress.
 - **User Profile**: Information about the user, including their vehicle details, modification history, and community interactions.
 
-## User Stories/Scenarios
+# User Stories/Scenarios
 
-### Create an Account
+## Create an Account
 
 - **Description**: As a casual user, I want to create an account with my email and password so that I can log in and gain access to authenticated features.
 - **Suggested Data**: Email, password.
 - **Precondition**: None.
 - **Post-condition**: The user is registered and can log in to access authenticated features.
 
-#### Technical Details
+### Technical Details
 
 **Database:**
 - **Table**: `Users`
-  - **Columns**: `user_id` (PK), `email` (unique), `password_hash`
+    - **Columns**: `user_id` (PK), `email` (unique), `password_hash`
 
 **REST API:**
 - **Model**: `User`
@@ -62,104 +62,103 @@ Emily has just bought a new car and wants to customize it with various modificat
 - **Validation**: Ensure unique email, validate password strength.
 - **Security**: Hash passwords before storing them in the database.
 
-### Create a Modification Plan
+## Create a Modification Plan
 
 - **Description**: As an authenticated user, I want to create a new modification plan for my vehicle by choosing my car's year, make, and model. I will then add detailed plans for modifications, including parts needed, their prices, and links to tutorials or suppliers. I want to create a timeline for completing each step of the modification.
 
-#### Technical Details
+### Technical Details
 
 **Database:**
 - **Tables**:
-  - `ModificationPlans`
-    - **Columns**:
-      - `plan_id` (PK): Unique identifier for each modification plan.
-      - `user_id` (FK): Foreign key to link the plan to the user who created it.
-      - `vehicle_year`: The year of the vehicle.
-      - `vehicle_make`: The make (brand) of the vehicle.
-      - `vehicle_model`: The model of the vehicle.
-      - `description`: Detailed description of the modification plan.
-      - `timeline`: JSON or text field to store the timeline information, such as start dates and completion dates for each modification step.
-      - `budget`: Total budget allocated for the modifications.
-      - `created_at`: Timestamp of when the plan was created.
-      - `updated_at`: Timestamp of the last update to the plan.
-  - `Parts`
-    - **Columns**:
-      - `id` (PK): Unique identifier for each part entry.
-      - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
-      - `part_name`: Name of the car part.
-      - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
-      - `manufacturer`: The manufacturer of the part.
-      - `OEM_number`: Original Equipment Manufacturer number, if available.
-      - `weight`: Weight of the part.
-      - `details`: Additional details about the part (e.g., specifications).
-      - `price`: Price of the part, entered by the user.
-      - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
-      - `fits_on_cars`: List of car models or makes that the part is compatible with.
-  - `Tutorials`
-    - **Columns**:
-      - `id` (PK): Unique identifier for each tutorial entry.
-      - `plan_id` (FK): Foreign key to link the tutorial to a specific modification plan.
-      - `video_link`: URL of the tutorial video.
-      - `description`: Brief description of what the tutorial covers.
+    - `ModificationPlans`
+        - **Columns**:
+            - `plan_id` (PK): Unique identifier for each modification plan.
+            - `user_id` (FK): Foreign key to link the plan to the user who created it.
+            - `vehicle_year`: The year of the vehicle.
+            - `vehicle_make`: The make (brand) of the vehicle.
+            - `vehicle_model`: The model of the vehicle.
+            - `description`: Detailed description of the modification plan.
+            - `timeline`: JSON or text field to store the timeline information, such as start dates and completion dates for each modification step.
+            - `budget`: Total budget allocated for the modifications.
+            - `created_at`: Timestamp of when the plan was created.
+            - `updated_at`: Timestamp of the last update to the plan.
+    - `Parts`
+        - **Columns**:
+            - `id` (PK): Unique identifier for each part entry.
+            - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
+            - `part_name`: Name of the car part.
+            - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
+            - `manufacturer`: The manufacturer of the part.
+            - `OEM_number`: Original Equipment Manufacturer number, if available.
+            - `weight`: Weight of the part.
+            - `details`: Additional details about the part (e.g., specifications).
+            - `price`: Price of the part, entered by the user.
+            - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
+            - `fits_on_cars`: List of car models or makes that the part is compatible with.
+    - `Tutorials`
+        - **Columns**:
+            - `id` (PK): Unique identifier for each tutorial entry.
+            - `plan_id` (FK): Foreign key to link the tutorial to a specific modification plan.
+            - `video_link`: URL of the tutorial video.
+            - `description`: Brief description of what the tutorial covers.
 
 **REST API:**
 - **Model**:
-  - `ModificationPlan`: Represents a modification plan including vehicle details, description, timeline, and budget.
-  - `Part`: Represents a part needed for the modification, including its name, part number, manufacturer, OEM number, weight, details, price, and supplier information.
-  - `Tutorial`: Represents a tutorial or guide linked to the modification plan.
+    - `ModificationPlan`: Represents a modification plan including vehicle details, description, timeline, and budget.
+    - `Part`: Represents a part needed for the modification, including its name, part number, manufacturer, OEM number, weight, details, price, and supplier information.
+    - `Tutorial`: Represents a tutorial or guide linked to the modification plan.
 - **Repository**:
-  - `ModificationPlanRepository`: CRUD operations for modification plans.
-  - `PartRepository`: CRUD operations for parts.
-  - `TutorialRepository`: CRUD operations for tutorials.
+    - `ModificationPlanRepository`: CRUD operations for modification plans.
+    - `PartRepository`: CRUD operations for parts.
+    - `TutorialRepository`: CRUD operations for tutorials.
 - **Service**:
-  - `ModificationPlanService`: Handles business logic for creating and updating modification plans, including interacting with the external API to pull vehicle information.
-  - `PartService`: Manages part-related operations, including adding parts to the plan and calculating total costs.
-  - `TutorialService`: Manages tutorials associated with the plan.
+    - `ModificationPlanService`: Handles business logic for creating and updating modification plans, including interacting with the external API to pull vehicle information.
+    - `PartService`: Manages part-related operations, including adding parts to the plan and calculating total costs.
+    - `TutorialService`: Manages tutorials associated with the plan.
 - **Controller**:
-  - `ModificationPlanController`: API endpoints for creating, retrieving, updating, and deleting modification plans. Includes endpoints for pulling vehicle information from the external API.
-  - `PartController`: API endpoints for managing parts.
-  - `TutorialController`: API endpoints for managing tutorials.
+    - `ModificationPlanController`: API endpoints for creating, retrieving, updating, and deleting modification plans. Includes endpoints for pulling vehicle information from the external API.
+    - `PartController`: API endpoints for managing parts.
+    - `TutorialController`: API endpoints for managing tutorials.
 
 **UI:**
 - **Component**: `ModificationPlanForm`
-  - **Fields**:
-    - **Vehicle Selection**: Dropdowns or search fields to choose year, make, and model of the car (data pulled from an external API).
-    - **Modification Details**: Text area for entering a description of the modification plan.
-    - **Parts Section**:
-      - Input fields for part name, part number, manufacturer, OEM number, weight, details, price, and supplier URLs.
-      - Ability to search for parts using an external API.
-      - Dropdown or multi-select input for specifying which car models the part fits.
-    - **Timeline Section**:
-      - Inputs for start dates, end dates, and estimated hours for each modification step.
-    - **Submit Button**: To save the modification plan to the database.
+    - **Fields**:
+        - **Vehicle Selection**: Dropdowns or search fields to choose year, make, and model of the car (data pulled from an external API).
+        - **Modification Details**: Text area for entering a description of the modification plan.
+        - **Parts Section**:
+            - Input fields for part name, part number, manufacturer, OEM number, weight, details, price, and supplier URLs.
+            - Ability to search for parts using an external API.
+            - Dropdown or multi-select input for specifying which car models the part fits.
+        - **Timeline Section**:
+            - Inputs for start dates, end dates, and estimated hours for each modification step.
+        - **Submit Button**: To save the modification plan to the database.
 - **Component**: `PlanDetails`
-  - **Displays**:
-    - Vehicle details, modification description, parts with their details and prices, tutorials, and timeline.
-    - Allows users to view and edit existing plans.
+    - **Displays**:
+        - Vehicle details, modification description, parts with their details and prices, tutorials, and timeline.
+        - Allows users to view and edit existing plans.
 
 **Other Details:**
 - **API Integration**: Integration with an external API to fetch car details (year, make, model) to help users select their vehicle and parts.
 - **Validation**:
-  - Ensure all required fields are filled out.
-  - Validate that the vehicle details are correctly selected.
-  - Check that the timeline dates are in the correct order (start date before end date).
+    - Ensure all required fields are filled out.
+    - Validate that the vehicle details are correctly selected.
+    - Check that the timeline dates are in the correct order (start date before end date).
 - **Complex Rules**:
-  - **Budget Constraints**: Ensure that the total budget is sufficient for all selected parts and any additional costs. Show how much is left in budget compared to cost.
+    - **Budget Constraints**: Ensure that the total budget is sufficient for all selected parts and any additional costs. Show how much is left in budget compared to cost.
 - **Calculations**:
-  - **Total Cost**: Calculate the total cost of the modification plan based on the individual parts' prices.
+    - **Total Cost**: Calculate the total cost of the modification plan based on the individual parts' prices.
 
-
-### Edit a Modification Plan
+## Edit a Modification Plan
 
 - **Description**: As an authenticated user, I want to modify an existing plan to update details or adjust progress.
 - **Precondition**: User must be logged in. The plan must not be completed.
 - **Post-condition**: The modification plan is updated with new details.
 
-#### Technical Details
+### Technical Details
 
 **Database:**
 - **Same Tables** as `Create a Modification Plan`
-  - Update existing entries based on `id`
+    - Update existing entries based on `id`
 
 **REST API:**
 - **Service**: `ModificationPlanService` (Plan updates)
@@ -171,17 +170,17 @@ Emily has just bought a new car and wants to customize it with various modificat
 **Other Details:**
 - **Validation**: Ensure updated details are consistent and complete.
 
-### Track Progress
+## Track Progress
 
 - **Description**: As an authenticated user, I want to update and track the progress of my modification plans.
 - **Precondition**: User must be logged in. The plan must be in progress.
 - **Post-condition**: The progress is updated and reflected in the plan status.
 
-#### Technical Details
+### Technical Details
 
 **Database:**
 - **Table**: `ModificationPlans`
-  - Add column `progress` or similar to track status
+    - Add column `progress` or similar to track status
 
 **REST API:**
 - **Service**: `ModificationPlanService` (Progress updates)
@@ -193,7 +192,7 @@ Emily has just bought a new car and wants to customize it with various modificat
 **Other Details:**
 - **Complex Rules**: Define valid progress states and update accordingly.
 
-### Browse and Search Parts
+## Browse and Search Parts
 
 - **Description**: As a casual user, I want to search for parts in the part database. I can add details specific to my build, including tools needed and prices from suppliers. I can also tag tutorial videos to parts and provide links to suppliers. The parts list will auto-populate using the API based on the car that I select.
 
@@ -201,51 +200,43 @@ Emily has just bought a new car and wants to customize it with various modificat
 
 - **Post-condition**: Search results display relevant parts and can be updated with specific details.
 
-#### Technical Details
+### Technical Details
 
 **Database:**
 - **Table**: `Parts`
-  - **Columns**:
-    - `id` (PK): Unique identifier for each part entry.
-    - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
-    - `part_name`: Name of the car part.
-    - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
-    - `manufacturer`: The manufacturer of the part.
-    - `OEM_number`: Original Equipment Manufacturer number, if available.
-    - `weight`: Weight of the part.
-    - `details`: Additional details about the part (e.g., specifications).
-    - `price`: Price of the part, entered by the user.
-    - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
-    - `fits_on_cars`: List of car models or makes that the part is compatible with.
-    - `tools_needed`: List of tools required for installation.
-    - `supplier_link`: URL link to the supplier or store where the part can be purchased.
+    - **Columns**:
+        - `id` (PK): Unique identifier for each part entry.
+        - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
+        - `part_name`: Name of the car part.
+        - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
+        - `manufacturer`: The manufacturer of the part.
+        - `OEM_number`: Original Equipment Manufacturer number, if available.
+        - `weight`: Weight of the part.
+        - `details`: Additional details about the part (e.g., specifications).
+        - `price`: Price of the part, entered by the user.
+        - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
+        - `fits_on_cars`: List of car models or makes that the part is compatible with.
+        - `tools_needed`: List of tools required for installation.
+        - `tutorial_links`: List of tutorial video links associated with the part.
 
 **REST API:**
 - **Model**: `Part`
-  - Includes fields for part name, part number, manufacturer, OEM number, weight, details, price, supplier information, tools needed, and supplier link.
-- **Repository**: `PartRepository`
-  - **Functions**: Search and retrieval of parts based on various criteria (e.g., vehicle details, part name).
-- **Service**: `PartService`
-  - **Functions**: Handles part details and search functionality, including integrating with the external API to auto-populate parts based on the car selected.
-- **Controller**: `PartController`
-  - **Endpoints**: Provides endpoints for searching parts, retrieving part details, and managing part information.
+- **Repository**: `PartRepository` (CRUD operations)
+- **Service**: `PartService` (Handles part-related logic)
+- **Controller**: `PartController` (Endpoints for searching and retrieving parts)
 
 **UI:**
 - **Component**: `PartSearch`
-  - **Features**:
-    - **Search Form**: Allows users to input search criteria (e.g., part name, vehicle details).
-    - **Auto-Population**: Fetches and displays parts based on the car selected, using data from the external API.
-    - **Results Display**: Shows search results with the ability to filter and sort.
-- **Component**: `PartDetails`
-  - **Displays**:
-    - Detailed view of a selected part, including tools needed, price, and supplier links.
-    - Option to tag tutorial videos related to the part.
+    - **Fields**:
+        - Search bar for part name, number, or category.
+        - Dropdown or search field for vehicle-specific parts.
+        - Display results with options to view details, add to plan, or link tutorials.
+    - **Details**:
+        - Part name, number, manufacturer, OEM number, weight, price, supplier info, tools needed, tutorial links.
 
 **Other Details:**
-- **API Integration**: Integration with an external API to fetch and auto-populate parts based on the selected vehicle's year, make, and model.
-- **Complex Rules**:
-  - STRETCH **Search Filters**: Implement filters for narrowing search results based on criteria such as part type, price range, or vehicle compatibility.
-  - STRETCH **Sorting**: Allow sorting of search results by different attributes (e.g., price, popularity).
+- **API Integration**: Integration with external part databases or APIs for additional part details.
+- **Validation**: Ensure accurate and relevant search results.
 
 
 ### Share and Receive Feedback
