@@ -19,6 +19,7 @@ Content-Type: application/json
 
 ### Test Access to Protected Resource (Using JWT Token)
 GET http://localhost:8080/protected/resource
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjM2MTcwODh9.boV6pJjjNKvXFTbRmbOrK-YfFpyz_9mmHsbsGDaG8oA
+Authorization: Bearer 
+
 ### Accessing Protected Resource without Token
 GET http://localhost:8080/protected/resource

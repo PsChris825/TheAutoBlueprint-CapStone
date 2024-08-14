@@ -1,0 +1,42 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+
+### Add a Car
+POST http://localhost:8080/api/car
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+  "make": "Toyota",
+  "model": "Corolla",
+  "year": 2022,
+  "engine": "1.8L I4",
+  "power": 139,
+  "driveType": "FWD",
+  "transmissionType": "CVT"
+}
+
+### Find a Car by ID
+GET http://localhost:8080/api/car/1
+Accept: application/json
+
+### Add a Car
+POST http://localhost:8080/api/car
+Content-Type: application/json
+
+{
+  "make": "Toyota",
+  "model": "Corolla",
+  "year": 2022,
+  "engine": "1.8L I4",
+  "power": 139,
+  "driveType": "FWD",
+  "transmissionType": "CVT"
+}

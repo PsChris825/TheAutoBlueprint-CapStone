@@ -41,6 +41,13 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/auto-blueprint").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/auto-blueprint/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/auto-blueprint/*").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/api/car").authenticated()
+//                .antMatchers(HttpMethod.GET, "/api/car/*").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
+//                .antMatchers(HttpMethod.DELETE, "/api/car/*").hasAuthority("ADMIN")
+
+
                 .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(authenticationManager(config), jwtConverter), BasicAuthenticationFilter.class)
@@ -64,10 +71,14 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 }
