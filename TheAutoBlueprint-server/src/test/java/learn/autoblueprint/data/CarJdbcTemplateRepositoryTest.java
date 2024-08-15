@@ -1,53 +1,66 @@
 package learn.autoblueprint.data;
 
+import learn.autoblueprint.TestHelpers;
+import learn.autoblueprint.TestSecurityConfig;
 import learn.autoblueprint.models.Car;
-import learn.autoblueprint.data.mappers.CarMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestSecurityConfig.class})
 public class CarJdbcTemplateRepositoryTest {
 
-    @Mock
-    private JdbcTemplate jdbcTemplate;
+    private static final int MISSING_ID = 99;
 
-    @InjectMocks
-    private CarJdbcTemplateRepository carRepository;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    CarJdbcTemplateRepository repository;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setup() {
+        jdbcTemplate.execute("call set_known_good_state()");
     }
 
     @Test
-    public void testFindById() {
-        Car expectedCar = new Car(1, "Toyota", "Corolla", 2022, "1.8L I4", 139, "FWD", "CVT");
-        when(jdbcTemplate.queryForObject(any(String.class), any(RowMapper.class), anyInt())).thenReturn(expectedCar);
+    void shouldFindById() {
+        Car expected = TestHelpers.createValidCar();
 
-        Car actualCar = carRepository.findById(1);
+        Car actual = repository.findById(1);
 
-        assertEquals(expectedCar, actualCar);
+        assertEquals(expected, actual);
+        assertEquals(1, actual.getCarId());
     }
 
     @Test
-    public void testAdd() {
-        Car carToAdd = new Car(null, "Toyota", "Corolla", 2022, "1.8L I4", 139, "FWD", "CVT");
-        Car addedCar = new Car(1, "Toyota", "Corolla", 2022, "1.8L I4", 139, "FWD", "CVT");
-        when(jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class)).thenReturn(1);
+    void add() {
+        Car car = new Car(null, "Honda", "Civic", 2021, "2.0L", 158, "FWD", "Automatic");
+        Car result = repository.add(car);
+        assertEquals("Honda", result.getMake());
+        assertEquals("Civic", result.getModel());
+        assertEquals(2021, result.getYear());
+    }
 
-        Car resultCar = carRepository.add(carToAdd);
+    @Test
+    void update() {
+        Car car = repository.findById(1);
+        car.setMake("Updated Make");
+        boolean success = repository.update(car);
+        assertEquals(true, success);
+        Car updatedCar = repository.findById(1);
+        assertEquals("Updated Make", updatedCar.getMake());
+    }
 
-        assertEquals(addedCar, resultCar);
-        verify(jdbcTemplate).update(any(String.class), any(), any(), any(), any(), any(), any(), any());
+    @Test
+    void deleteById() {
+        boolean success = repository.deleteById(1);
+        assertEquals(true, success);
+        Car car = repository.findById(1);
+        assertEquals(null, car);
     }
 }

@@ -3,7 +3,6 @@ package learn.autoblueprint.models;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Car {
@@ -115,5 +114,3 @@ public class Car {
         return Objects.hash(carId, make, model, year, engine, power, driveType, transmissionType);
     }
 }
-
-
