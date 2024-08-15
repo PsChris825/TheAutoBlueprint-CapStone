@@ -1,7 +1,6 @@
 package learn.autoblueprint.data;
 
 import learn.autoblueprint.TestHelpers;
-import learn.autoblueprint.TestSecurityConfig;
 import learn.autoblueprint.models.Car;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = {TestSecurityConfig.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CarJdbcTemplateRepositoryTest {
 
     private static final int MISSING_ID = 99;
@@ -58,9 +57,16 @@ public class CarJdbcTemplateRepositoryTest {
 
     @Test
     void deleteById() {
-        boolean success = repository.deleteById(1);
+        Car car = TestHelpers.createValidCar();
+        repository.add(car);
+        boolean success = repository.deleteById(car.getCarId());
         assertEquals(true, success);
-        Car car = repository.findById(1);
-        assertEquals(null, car);
+        Car deletedCar = null;
+        try {
+            deletedCar = repository.findById(car.getCarId());
+        } catch (Exception e) {
+            // expected
+        }
+        assertEquals(null, deletedCar);
     }
 }

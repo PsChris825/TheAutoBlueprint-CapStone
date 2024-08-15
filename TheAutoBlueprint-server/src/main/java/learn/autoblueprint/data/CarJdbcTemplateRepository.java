@@ -69,8 +69,8 @@ public class CarJdbcTemplateRepository implements CarRepository {
     }
 
     @Override
-    public boolean deleteById(int carId) {
-        final String sql = "DELETE FROM car WHERE car_id = ?";
-        return jdbcTemplate.update(sql, carId) > 0;
+    public boolean deleteById(int id) {
+        String sql = "DELETE FROM car WHERE car_id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 }

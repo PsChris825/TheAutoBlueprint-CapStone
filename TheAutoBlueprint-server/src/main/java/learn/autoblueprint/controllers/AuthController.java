@@ -3,6 +3,7 @@ package learn.autoblueprint.controllers;
 import learn.autoblueprint.Security.JwtConverter;
 import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Credentials;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/security")
+@ConditionalOnWebApplication
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

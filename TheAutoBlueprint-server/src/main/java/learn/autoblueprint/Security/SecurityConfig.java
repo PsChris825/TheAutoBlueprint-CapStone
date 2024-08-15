@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/auto-blueprint/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/auto-blueprint/*").hasAuthority("ADMIN")
 
-                .antMatchers(HttpMethod.POST, "/api/car").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/car").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/car/*").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/car/*").hasAuthority("ADMIN")
