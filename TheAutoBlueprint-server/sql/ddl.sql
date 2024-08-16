@@ -35,23 +35,6 @@ CREATE TABLE car (
     transmission_type VARCHAR(255)
 );
 
-CREATE TABLE modification_plan (
-    plan_id INT PRIMARY KEY AUTO_INCREMENT,
-    app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
-    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
-    plan_description TEXT,
-    plan_hours_of_completion INT,
-    budget DECIMAL(10, 2),
-    total_cost DECIMAL(10, 2),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE part_category (
-    category_id INT PRIMARY KEY AUTO_INCREMENT,
-    category_name VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE part (
     part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_name VARCHAR(255) NOT NULL,
@@ -63,26 +46,32 @@ CREATE TABLE part (
     category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
 );
 
-CREATE TABLE supplier (
-    supplier_id INT PRIMARY KEY AUTO_INCREMENT,
-    supplier_name VARCHAR(255) NOT NULL,
-    website VARCHAR(255)
-);
-
 CREATE TABLE plan_part (
-    plan_id INT REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
+    plan_part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_id INT REFERENCES part(part_id) ON DELETE CASCADE,
-    supplier_id INT REFERENCES supplier(supplier_id) ON DELETE SET NULL,
     price DECIMAL(10, 2),
-    PRIMARY KEY (plan_id, part_id, supplier_id)
+    tutorial_url VARCHAR(255),
+    supplier_url VARCHAR(255)
 );
 
-CREATE TABLE tutorial (
-    tutorial_id INT PRIMARY KEY AUTO_INCREMENT,
-    plan_id INT REFERENCES plan_part(plan_id) ON DELETE CASCADE,
-    part_id INT REFERENCES plan_part(part_id) ON DELETE CASCADE,
-    video_link VARCHAR(255),
-    description TEXT
+CREATE TABLE modification_plan (
+    plan_id INT PRIMARY KEY AUTO_INCREMENT,
+    app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
+    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
+    plan_part_id INT REFERENCES plan_part(plan_part_id) ON DELETE SET NULL,
+    plan_name VARCHAR(255),
+    plan_description TEXT,
+    plan_hours_of_completion INT,
+    budget DECIMAL(10, 2),
+    total_cost DECIMAL(10, 2),
+    cost_versus_budget DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE part_category (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE post (
@@ -109,7 +98,7 @@ DELETE FROM app_user;
 DELETE FROM plan_part;
 SET SQL_SAFE_UPDATES = 1;
 
-INSERT INTO app_role (name) VALUES
+INSERT INTO app_role (`name`) VALUES
     ('USER'),
     ('ADMIN');
 

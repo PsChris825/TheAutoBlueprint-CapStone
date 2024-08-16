@@ -20,32 +20,32 @@ public class CarJdbcTemplateRepository implements CarRepository {
 
     @Override
     public Car findById(int id) {
-        final String sql = "SELECT car_id, make, model, year, engine, power, drive_type, transmission_type FROM car WHERE car_id = ?";
+        final String sql = "SELECT car_id, make, model, year, engine, power, drive_type, transmission_type FROM carId WHERE car_id = ?";
         return jdbcTemplate.queryForObject(sql, carMapper, id);
     }
 
     @Override
-    public Car add(Car car) {
+    public Car add(Car carId) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("car")
+                .withTableName("carId")
                 .usingGeneratedKeyColumns("car_id");
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("make", car.getMake());
-        args.put("model", car.getModel());
-        args.put("year", car.getYear());
-        args.put("engine", car.getEngine());
-        args.put("power", car.getPower());
-        args.put("drive_type", car.getDriveType());
-        args.put("transmission_type", car.getTransmissionType());
-        car.setCarId(insert.executeAndReturnKey(args).intValue());
-        return car;
+        args.put("make", carId.getMake());
+        args.put("model", carId.getModel());
+        args.put("year", carId.getYear());
+        args.put("engine", carId.getEngine());
+        args.put("power", carId.getPower());
+        args.put("drive_type", carId.getDriveType());
+        args.put("transmission_type", carId.getTransmissionType());
+        carId.setCarId(insert.executeAndReturnKey(args).intValue());
+        return carId;
     }
 
     @Override
-    public boolean update(Car car) {
+    public boolean update(Car carId) {
         final String sql = """
-                UPDATE car SET
+                UPDATE carId SET
                     make = ?,
                     model = ?,
                     year = ?,
@@ -57,20 +57,20 @@ public class CarJdbcTemplateRepository implements CarRepository {
                 """;
 
         int rowsAffected = jdbcTemplate.update(sql,
-                car.getMake(),
-                car.getModel(),
-                car.getYear(),
-                car.getEngine(),
-                car.getPower(),
-                car.getDriveType(),
-                car.getTransmissionType(),
-                car.getCarId());
+                carId.getMake(),
+                carId.getModel(),
+                carId.getYear(),
+                carId.getEngine(),
+                carId.getPower(),
+                carId.getDriveType(),
+                carId.getTransmissionType(),
+                carId.getCarId());
         return rowsAffected > 0;
     }
 
     @Override
     public boolean deleteById(int id) {
-        String sql = "DELETE FROM car WHERE car_id = ?";
+        String sql = "DELETE FROM carId WHERE car_id = ?";
         return jdbcTemplate.update(sql, id) > 0;
     }
 }

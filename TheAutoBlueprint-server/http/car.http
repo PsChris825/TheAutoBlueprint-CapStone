@@ -9,7 +9,7 @@ Content-Type: application/json
 
 
 ### Add a Car
-POST http://localhost:8080/api/car
+POST http://localhost:8080/api/carId
 Content-Type: application/json
 Authorization: Bearer 
 
@@ -24,11 +24,11 @@ Authorization: Bearer
 }
 
 ### Find a Car by ID
-GET http://localhost:8080/api/car/1
+GET http://localhost:8080/api/carId/1
 Accept: application/json
 
 ### Add a Car
-POST http://localhost:8080/api/car
+POST http://localhost:8080/api/carId
 Content-Type: application/json
 
 {

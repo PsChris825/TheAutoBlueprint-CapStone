@@ -1,7 +1,13 @@
 package learn.autoblueprint;
 
+import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Car;
+import learn.autoblueprint.models.ModificationPlan;
 import learn.autoblueprint.models.PartCategory;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Collections;
 
 public class TestHelpers {
 
@@ -63,5 +69,44 @@ public class TestHelpers {
 
     public static PartCategory makeExistingPartCategory() {
         return makePartCategory(1, "Engine");
+    }
+
+    public static AppUser createValidAppUser() {
+        return new AppUser(1, "testuser", "password", true, Collections.singletonList("ROLE_USER"));
+    }
+
+    public static ModificationPlan createValidModificationPlan() {
+        ModificationPlan plan = new ModificationPlan();
+        plan.setPlanId(1);
+        plan.setAppUserId(createValidAppUser());
+        plan.setCarId(createValidCar());
+        plan.setPlanName("Test Plan");
+        plan.setPlanDescription("Test Description");
+        plan.setPlanHoursOfCompletion(5);
+        plan.setBudget(BigDecimal.valueOf(1000));
+        plan.setTotalCost(BigDecimal.valueOf(800));
+        plan.setCostVersusBudget(BigDecimal.valueOf(200));
+        plan.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        plan.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        return plan;
+    }
+
+    public static ModificationPlan makeNewModificationPlan() {
+        ModificationPlan plan = new ModificationPlan();
+        plan.setAppUserId(createValidAppUser());
+        plan.setCarId(makeNewCar());
+        plan.setPlanName("New Plan");
+        plan.setPlanDescription("New Description");
+        plan.setPlanHoursOfCompletion(10);
+        plan.setBudget(BigDecimal.valueOf(2000));
+        plan.setTotalCost(BigDecimal.valueOf(1500));
+        plan.setCostVersusBudget(BigDecimal.valueOf(500));
+        plan.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        plan.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        return plan;
+    }
+
+    public static ModificationPlan makeExistingModificationPlan() {
+        return createValidModificationPlan();
     }
 }

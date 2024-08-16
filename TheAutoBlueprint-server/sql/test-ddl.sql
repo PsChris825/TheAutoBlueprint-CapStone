@@ -37,23 +37,6 @@ CREATE TABLE car (
     transmission_type VARCHAR(255)
 );
 
-CREATE TABLE modification_plan (
-    plan_id INT PRIMARY KEY AUTO_INCREMENT,
-    app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
-    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
-    plan_description TEXT,
-    plan_hours_of_completion INT,
-    budget DECIMAL(10, 2),
-    total_cost DECIMAL(10, 2),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE part_category (
-    category_id INT PRIMARY KEY AUTO_INCREMENT,
-    category_name VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE part (
     part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_name VARCHAR(255) NOT NULL,
@@ -65,26 +48,32 @@ CREATE TABLE part (
     category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
 );
 
-CREATE TABLE supplier (
-    supplier_id INT PRIMARY KEY AUTO_INCREMENT,
-    supplier_name VARCHAR(255) NOT NULL,
-    website VARCHAR(255)
-);
-
 CREATE TABLE plan_part (
-    plan_id INT REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
+    plan_part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_id INT REFERENCES part(part_id) ON DELETE CASCADE,
-    supplier_id INT REFERENCES supplier(supplier_id) ON DELETE SET NULL,
     price DECIMAL(10, 2),
-    PRIMARY KEY (plan_id, part_id, supplier_id)
+    tutorial_url VARCHAR(255),
+    supplier_url VARCHAR(255)
 );
 
-CREATE TABLE tutorial (
-    tutorial_id INT PRIMARY KEY AUTO_INCREMENT,
-    plan_id INT REFERENCES plan_part(plan_id) ON DELETE CASCADE,
-    part_id INT REFERENCES plan_part(part_id) ON DELETE CASCADE,
-    video_link VARCHAR(255),
-    description TEXT
+CREATE TABLE modification_plan (
+    plan_id INT PRIMARY KEY AUTO_INCREMENT,
+    app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
+    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
+    plan_part_id INT REFERENCES plan_part(plan_part_id) ON DELETE SET NULL,
+    plan_name VARCHAR(255),
+    plan_description TEXT,
+    plan_hours_of_completion INT,
+    budget DECIMAL(10, 2),
+    total_cost DECIMAL(10, 2),
+    cost_versus_budget DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE part_category (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE post (
@@ -113,12 +102,10 @@ BEGIN
     DELETE FROM app_user;
     DELETE FROM plan_part;
     DELETE FROM part;
-    DELETE FROM supplier;
     DELETE FROM modification_plan;
     DELETE FROM car;
     DELETE FROM `comment`;
     DELETE FROM post;
-    DELETE FROM tutorial;
     DELETE FROM part_category;
     DELETE FROM app_role;
 
@@ -129,9 +116,7 @@ BEGIN
     ALTER TABLE modification_plan AUTO_INCREMENT = 1;
     ALTER TABLE part_category AUTO_INCREMENT = 1;
     ALTER TABLE part AUTO_INCREMENT = 1;
-    ALTER TABLE supplier AUTO_INCREMENT = 1;
     ALTER TABLE plan_part AUTO_INCREMENT = 1;
-    ALTER TABLE tutorial AUTO_INCREMENT = 1;
     ALTER TABLE post AUTO_INCREMENT = 1;
     ALTER TABLE `comment` AUTO_INCREMENT = 1;
 
@@ -154,10 +139,6 @@ BEGIN
         ('Toyota', 'Corolla', 2020, '1.8L', 139, 'FWD', 'Automatic'),
         ('Ford', 'Mustang', 2021, '5.0L', 450, 'RWD', 'Manual');
 
-    INSERT INTO modification_plan (app_user_id, car_id, plan_description, plan_hours_of_completion, budget, total_cost) VALUES
-        (1, 1, 'Basic Upgrades', 10, 5000.00, 1200.00),
-        (2, 2, 'Performance Mods', 20, 10000.00, 8000.00);
-
     INSERT INTO part_category (category_name) VALUES
         ('Engine'),
         ('Suspension'),
@@ -167,17 +148,13 @@ BEGIN
         ('Air Filter', 'AF123', 'K&N', 'OEM456', 1.5, 'High-flow air filter', 1),
         ('Shock Absorber', 'SA789', 'Bilstein', 'OEM123', 4.2, 'Heavy-duty shock absorber', 2);
 
-    INSERT INTO supplier (supplier_name, website) VALUES
-        ('AutoZone', 'https://www.autozone.com'),
-        ('PepBoys', 'https://www.pepboys.com');
+    INSERT INTO plan_part (part_id, price, tutorial_url, supplier_url) VALUES
+        (1, 50.00, 'https://www.youtube.com/watch?v=example', 'http://example.com/supplier1'),
+        (2, 150.00, 'https://www.youtube.com/watch?v=example2', 'http://example.com/supplier2');
 
-    INSERT INTO plan_part (plan_id, part_id, supplier_id, price) VALUES
-        (1, 1, 1, 50.00),
-        (2, 2, 2, 150.00);
-
-    INSERT INTO tutorial (plan_id, part_id, video_link, description) VALUES
-        (1, 1, 'https://www.youtube.com/watch?v=example', 'How to install an air filter'),
-        (2, 2, 'https://www.youtube.com/watch?v=example2', 'How to replace a shock absorber');
+    INSERT INTO modification_plan (app_user_id, car_id, plan_part_id, plan_name, plan_description, plan_hours_of_completion, budget, total_cost, cost_versus_budget) VALUES
+        (1, 1, 1, 'Plan 1', 'Basic Upgrades', 10, 5000.00, 1200.00, 3800.00),
+        (2, 2, 1, 'Plan 2', 'Performance Mods', 20, 10000.00, 8000.00, 2000.00);
 
     INSERT INTO post (user_id, title, post_description, image_url) VALUES
         (1, 'My Car Mods', 'Check out the mods I did on my car', 'http://example.com/car1.jpg'),
@@ -189,4 +166,3 @@ BEGIN
 END //
 
 DELIMITER ;
-

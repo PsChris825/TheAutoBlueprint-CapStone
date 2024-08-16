@@ -2,35 +2,35 @@
 
 ## Problem Statement
 
-Car enthusiasts often struggle to keep track of and manage modifications to their vehicles. Planning and documenting modifications can become overwhelming, especially when managing parts, suppliers, and progress updates. There is no centralized platform that helps users plan their modifications, track progress, and engage with a community of car enthusiasts for feedback and recommendations.
+Car enthusiasts often struggle to keep track of and manage modifications to their vehicles. Planning and documenting modifications can become overwhelming, especially when managing parts, suppliers, and progress updates. There is no centralized platform that helps users plan their modifications, track progress, and engage with a community of carId enthusiasts for feedback and recommendations.
 
 ## Technical Solution
 
-Develop a Car Modification Planner application that allows users to create, manage, and document modifications to their vehicles. This app will provide a centralized place for users to plan modifications, track progress, and interact with the car enthusiast community. Key features include:
+Develop a Car Modification Planner application that allows users to create, manage, and document modifications to their vehicles. This app will provide a centralized place for users to plan modifications, track progress, and interact with the carId enthusiast community. Key features include:
 
 - **Modification Plans**: Users can create detailed plans for their vehicle modifications, including descriptions, timelines, and progress tracking.
-- **Part Database**: A searchable database of car parts and suppliers will help users find the components they need.
+- **Part Database**: A searchable database of carId parts and suppliers will help users find the components they need.
   - Users will select parts from a drop-down menu or add custom parts not in the system.
   - Users can specify tools needed for each part and adjust prices based on their preferred suppliers.
-- **Community Feedback**: Users can share their modification plans and progress updates to receive feedback and advice from other car enthusiasts.
+- **Community Feedback**: Users can share their modification plans and progress updates to receive feedback and advice from other carId enthusiasts.
 - **Supplier Interaction**: Users can view supplier information, manage orders, and track delivery statuses.
 - **Budget Planner**: Users can see their entire build laid out and manage their budget accordingly.
 - **Stretch Goals**: Users will be able to provide feedback to others, contributing to an auto-populated database of parts for specific cars.
 
 ### Scenario 1
 
-John is a car enthusiast who wants to upgrade his vehicle's suspension system. He uses the Car Modification Planner app to create a detailed plan for the modification, including a list of required parts and suppliers. He tracks the progress of the modification, shares updates with the community, and receives feedback on his choices. The app also helps him manage his budget and link tutorial videos to assist in various parts of the build.
+John is a carId enthusiast who wants to upgrade his vehicle's suspension system. He uses the Car Modification Planner app to create a detailed plan for the modification, including a list of required parts and suppliers. He tracks the progress of the modification, shares updates with the community, and receives feedback on his choices. The app also helps him manage his budget and link tutorial videos to assist in various parts of the build.
 
 ### Scenario 2
 
-Emily has just bought a new car and wants to customize it with various modifications. She uses the Car Modification Planner app to explore different modification options and create a plan for her upgrades. She browses the part database, checks supplier ratings, and tracks the status of her orders. Emily interacts with other users to get recommendations and see how similar modifications have turned out for others.
+Emily has just bought a new carId and wants to customize it with various modifications. She uses the Car Modification Planner app to explore different modification options and create a plan for her upgrades. She browses the part database, checks supplier ratings, and tracks the status of her orders. Emily interacts with other users to get recommendations and see how similar modifications have turned out for others.
 
 ## Glossary
 
 - **Modification Plan**: A detailed description of the planned changes to a vehicle, including parts to be used, timelines, budget, and progress tracking.
-- **Part Database**: A collection of car parts available for users to input extra details in for their specific builds.
+- **Part Database**: A collection of carId parts available for users to input extra details in for their specific builds.
 - **Progress Tracking**: The ability to monitor the status and completion of modifications over time.
-- **Community Feedback**: Input and advice from other car enthusiasts regarding modification plans and progress.
+- **Community Feedback**: Input and advice from other carId enthusiasts regarding modification plans and progress.
 - **User Profile**: Information about the user, including their vehicle details, modification history, and community interactions.
 
 # User Stories/Scenarios
@@ -64,7 +64,7 @@ Emily has just bought a new car and wants to customize it with various modificat
 
 ## Create a Modification Plan
 
-- **Description**: As an authenticated user, I want to create a new modification plan for my vehicle by choosing my car's year, make, and model. I will then add detailed plans for modifications, including parts needed, their prices, and links to tutorials or suppliers. I want to create a timeline for completing each step of the modification.
+- **Description**: As an authenticated user, I want to create a new modification plan for my vehicle by choosing my carId's year, make, and model. I will then add detailed plans for modifications, including parts needed, their prices, and links to tutorials or suppliers. I want to create a timeline for completing each step of the modification.
 
 ### Technical Details
 
@@ -86,7 +86,7 @@ Emily has just bought a new car and wants to customize it with various modificat
         - **Columns**:
             - `id` (PK): Unique identifier for each part entry.
             - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
-            - `part_name`: Name of the car part.
+            - `part_name`: Name of the carId part.
             - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
             - `manufacturer`: The manufacturer of the part.
             - `OEM_number`: Original Equipment Manufacturer number, if available.
@@ -94,7 +94,7 @@ Emily has just bought a new car and wants to customize it with various modificat
             - `details`: Additional details about the part (e.g., specifications).
             - `price`: Price of the part, entered by the user.
             - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
-            - `fits_on_cars`: List of car models or makes that the part is compatible with.
+            - `fits_on_cars`: List of carId models or makes that the part is compatible with.
     - `Tutorials`
         - **Columns**:
             - `id` (PK): Unique identifier for each tutorial entry.
@@ -123,12 +123,12 @@ Emily has just bought a new car and wants to customize it with various modificat
 **UI:**
 - **Component**: `ModificationPlanForm`
     - **Fields**:
-        - **Vehicle Selection**: Dropdowns or search fields to choose year, make, and model of the car (data pulled from an external API).
+        - **Vehicle Selection**: Dropdowns or search fields to choose year, make, and model of the carId (data pulled from an external API).
         - **Modification Details**: Text area for entering a description of the modification plan.
         - **Parts Section**:
             - Input fields for part name, part number, manufacturer, OEM number, weight, details, price, and supplier URLs.
             - Ability to search for parts using an external API.
-            - Dropdown or multi-select input for specifying which car models the part fits.
+            - Dropdown or multi-select input for specifying which carId models the part fits.
         - **Timeline Section**:
             - Inputs for start dates, end dates, and estimated hours for each modification step.
         - **Submit Button**: To save the modification plan to the database.
@@ -138,7 +138,7 @@ Emily has just bought a new car and wants to customize it with various modificat
         - Allows users to view and edit existing plans.
 
 **Other Details:**
-- **API Integration**: Integration with an external API to fetch car details (year, make, model) to help users select their vehicle and parts.
+- **API Integration**: Integration with an external API to fetch carId details (year, make, model) to help users select their vehicle and parts.
 - **Validation**:
     - Ensure all required fields are filled out.
     - Validate that the vehicle details are correctly selected.
@@ -194,7 +194,7 @@ Emily has just bought a new car and wants to customize it with various modificat
 
 ## Browse and Search Parts
 
-- **Description**: As a casual user, I want to search for parts in the part database. I can add details specific to my build, including tools needed and prices from suppliers. I can also tag tutorial videos to parts and provide links to suppliers. The parts list will auto-populate using the API based on the car that I select.
+- **Description**: As a casual user, I want to search for parts in the part database. I can add details specific to my build, including tools needed and prices from suppliers. I can also tag tutorial videos to parts and provide links to suppliers. The parts list will auto-populate using the API based on the carId that I select.
 
 - **Precondition**: None.
 
@@ -207,7 +207,7 @@ Emily has just bought a new car and wants to customize it with various modificat
     - **Columns**:
         - `id` (PK): Unique identifier for each part entry.
         - `plan_id` (FK): Foreign key to link the part to a specific modification plan.
-        - `part_name`: Name of the car part.
+        - `part_name`: Name of the carId part.
         - `part_number`: Unique identifier for the part (e.g., SKU or catalog number).
         - `manufacturer`: The manufacturer of the part.
         - `OEM_number`: Original Equipment Manufacturer number, if available.
@@ -215,7 +215,7 @@ Emily has just bought a new car and wants to customize it with various modificat
         - `details`: Additional details about the part (e.g., specifications).
         - `price`: Price of the part, entered by the user.
         - `supplier_info`: URLs or contact information for suppliers where the part can be purchased.
-        - `fits_on_cars`: List of car models or makes that the part is compatible with.
+        - `fits_on_cars`: List of carId models or makes that the part is compatible with.
         - `tools_needed`: List of tools required for installation.
         - `tutorial_links`: List of tutorial video links associated with the part.
 

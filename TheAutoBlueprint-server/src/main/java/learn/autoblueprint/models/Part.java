@@ -1,6 +1,8 @@
 package learn.autoblueprint.models;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Part {
@@ -13,6 +15,8 @@ public class Part {
     private BigDecimal weight;
     private String details;
     private Integer categoryId;
+
+    private List<PartCategory> categoryList = new ArrayList<>();
 
     public Part() {}
 
@@ -103,4 +107,19 @@ public class Part {
     public int hashCode() {
         return Objects.hash(partId, partName, partNumber, manufacturer, OEMNumber, weight, details, categoryId);
     }
+
+    @Override
+    public String toString() {
+        return "Part{" +
+                "partId=" + partId +
+                ", partName='" + partName + '\'' +
+                ", partNumber='" + partNumber + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", OEMNumber='" + OEMNumber + '\'' +
+                ", weight=" + weight +
+                ", details='" + details + '\'' +
+                ", categoryId=" + categoryId +
+                '}';
+    }
+
 }

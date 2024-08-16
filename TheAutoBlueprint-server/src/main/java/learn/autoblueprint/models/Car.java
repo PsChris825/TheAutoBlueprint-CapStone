@@ -26,6 +26,10 @@ public class Car {
 
     public Car() {}
 
+    public Car(Integer carId) {
+        this.carId = carId;
+    }
+
     public Car(Integer carId, String make, String model, Integer year, String engine, Integer power, String driveType, String transmissionType) {
         this.carId = carId;
         this.make = make;

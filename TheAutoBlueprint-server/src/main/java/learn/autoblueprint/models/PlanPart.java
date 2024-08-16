@@ -5,42 +5,37 @@ import java.util.Objects;
 
 public class PlanPart {
 
-    private Integer planId;
-    private Integer partId;
-    private Integer supplierId;
+    private Integer planPartId;
+    private Part part;
     private BigDecimal price;
+    private String tutorialUrl;
+    private String supplierUrl;
 
-    public PlanPart() {}
+    public PlanPart() {
+    }
 
-    public PlanPart(Integer planId, Integer partId, Integer supplierId, BigDecimal price) {
-        this.planId = planId;
-        this.partId = partId;
-        this.supplierId = supplierId;
+    public PlanPart(Integer planPartId, Part part, BigDecimal price, String tutorialUrl, String supplierUrl) {
+        this.planPartId = planPartId;
+        this.part = part;
         this.price = price;
+        this.tutorialUrl = tutorialUrl;
+        this.supplierUrl = supplierUrl;
     }
 
-    public Integer getPlanId() {
-        return planId;
+    public Integer getPlanPartId() {
+        return planPartId;
     }
 
-    public void setPlanId(Integer planId) {
-        this.planId = planId;
+    public void setPlanPartId(Integer planPartId) {
+        this.planPartId = planPartId;
     }
 
-    public Integer getPartId() {
-        return partId;
+    public Part getPart() {
+        return part;
     }
 
-    public void setPartId(Integer partId) {
-        this.partId = partId;
-    }
-
-    public Integer getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setPart(Part part) {
+        this.part = part;
     }
 
     public BigDecimal getPrice() {
@@ -51,17 +46,32 @@ public class PlanPart {
         this.price = price;
     }
 
+    public String getTutorialUrl() {
+        return tutorialUrl;
+    }
+
+    public void setTutorialUrl(String tutorialUrl) {
+        this.tutorialUrl = tutorialUrl;
+    }
+
+    public String getSupplierUrl() {
+        return supplierUrl;
+    }
+
+    public void setSupplierUrl(String supplierUrl) {
+        this.supplierUrl = supplierUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanPart planPart = (PlanPart) o;
-        return Objects.equals(planId, planPart.planId) && Objects.equals(partId, planPart.partId) && Objects.equals(supplierId, planPart.supplierId) && Objects.equals(price, planPart.price);
+        return Objects.equals(planPartId, planPart.planPartId) && Objects.equals(part, planPart.part) && Objects.equals(price, planPart.price) && Objects.equals(tutorialUrl, planPart.tutorialUrl) && Objects.equals(supplierUrl, planPart.supplierUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planId, partId, supplierId, price);
+        return Objects.hash(planPartId, part, price, tutorialUrl, supplierUrl);
     }
 }
-
