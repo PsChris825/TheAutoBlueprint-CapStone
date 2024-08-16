@@ -49,7 +49,7 @@ CREATE TABLE modification_plan (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE part_categories (
+CREATE TABLE part_category (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(255) NOT NULL
 );
@@ -62,7 +62,7 @@ CREATE TABLE part (
     OEM_number VARCHAR(255),
     weight DECIMAL(10, 2),
     details TEXT,
-    category_id INT REFERENCES part_categories(category_id) ON DELETE SET NULL
+    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
 );
 
 CREATE TABLE supplier (
@@ -119,7 +119,7 @@ BEGIN
     DELETE FROM `comment`;
     DELETE FROM post;
     DELETE FROM tutorial;
-    DELETE FROM part_categories;
+    DELETE FROM part_category;
     DELETE FROM app_role;
 
     ALTER TABLE app_user AUTO_INCREMENT = 1;
@@ -127,7 +127,7 @@ BEGIN
     ALTER TABLE app_user_role AUTO_INCREMENT = 1;
     ALTER TABLE car AUTO_INCREMENT = 1;
     ALTER TABLE modification_plan AUTO_INCREMENT = 1;
-    ALTER TABLE part_categories AUTO_INCREMENT = 1;
+    ALTER TABLE part_category AUTO_INCREMENT = 1;
     ALTER TABLE part AUTO_INCREMENT = 1;
     ALTER TABLE supplier AUTO_INCREMENT = 1;
     ALTER TABLE plan_part AUTO_INCREMENT = 1;
@@ -158,7 +158,7 @@ BEGIN
         (1, 1, 'Basic Upgrades', 10, 5000.00, 1200.00),
         (2, 2, 'Performance Mods', 20, 10000.00, 8000.00);
 
-    INSERT INTO part_categories (category_name) VALUES
+    INSERT INTO part_category (category_name) VALUES
         ('Engine'),
         ('Suspension'),
         ('Body');

@@ -5,7 +5,8 @@ import learn.autoblueprint.models.PartCategory;
 import java.util.List;
 
 public interface PartCategoryRepository {
-    List<PartCategory> findAll();
+
+        List<PartCategory> findAll();
 
     PartCategory findById(int partCategoryId);
 
@@ -13,5 +14,7 @@ public interface PartCategoryRepository {
 
     boolean update(PartCategory partCategory);
 
-    boolean deleteById(int categoryId);
+    boolean deleteById(int partCategoryId);
+
+    boolean existsByName(String categoryName);
 }

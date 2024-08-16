@@ -4,9 +4,11 @@ package learn.autoblueprint.controllers;
 import learn.autoblueprint.domain.CarService;
 import learn.autoblueprint.domain.Result;
 import learn.autoblueprint.domain.ResultType;
+import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Car;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,7 +32,7 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Car car) {
+    public ResponseEntity<?> add(@RequestBody Car car, @AuthenticationPrincipal AppUser user) {
         Result<Car> result = service.add(car);
         if (result.isSuccess()) {
             return ResponseEntity.ok().body(result.getPayload());
@@ -40,7 +42,7 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Car car) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Car car, @AuthenticationPrincipal AppUser user) {
         if (id != car.getCarId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -56,7 +58,7 @@ public class CarController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id, @AuthenticationPrincipal AppUser user) {
         Result<Void> result = service.deleteById(id);
         if (result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

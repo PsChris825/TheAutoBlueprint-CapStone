@@ -11,15 +11,17 @@ CREATE TABLE app_user (
 
 CREATE TABLE app_role (
     app_role_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE
+    `name` VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE app_user_role (
     app_user_id INT NOT NULL,
     app_role_id INT NOT NULL,
-    PRIMARY KEY (app_user_id, app_role_id),
-    FOREIGN KEY (app_user_id) REFERENCES app_user(app_user_id),
-    FOREIGN KEY (app_role_id) REFERENCES app_role(app_role_id)
+    CONSTRAINT pk_app_user_role PRIMARY KEY (app_user_id, app_role_id),
+    CONSTRAINT fk_app_user_role_user_id FOREIGN KEY (app_user_id)
+        REFERENCES app_user(app_user_id),
+    CONSTRAINT fk_app_user_role_role_id FOREIGN KEY (app_role_id)
+        REFERENCES app_role(app_role_id)
 );
 
 CREATE TABLE car (
@@ -35,19 +37,17 @@ CREATE TABLE car (
 
 CREATE TABLE modification_plan (
     plan_id INT PRIMARY KEY AUTO_INCREMENT,
-    app_user_id INT,
-    car_id INT,
+    app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
+    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
     plan_description TEXT,
     plan_hours_of_completion INT,
     budget DECIMAL(10, 2),
     total_cost DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (app_user_id) REFERENCES app_user(app_user_id) ON DELETE CASCADE,
-    FOREIGN KEY (car_id) REFERENCES car(car_id) ON DELETE SET NULL
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE part_categories (
+CREATE TABLE part_category (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(255) NOT NULL
 );
@@ -60,8 +60,7 @@ CREATE TABLE part (
     OEM_number VARCHAR(255),
     weight DECIMAL(10, 2),
     details TEXT,
-    category_id INT,
-    FOREIGN KEY (category_id) REFERENCES part_categories(category_id) ON DELETE SET NULL
+    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
 );
 
 CREATE TABLE supplier (
@@ -71,45 +70,37 @@ CREATE TABLE supplier (
 );
 
 CREATE TABLE plan_part (
-    plan_id INT,
-    part_id INT,
-    supplier_id INT NULL,  
+    plan_id INT REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
+    part_id INT REFERENCES part(part_id) ON DELETE CASCADE,
+    supplier_id INT REFERENCES supplier(supplier_id) ON DELETE SET NULL,
     price DECIMAL(10, 2),
-    PRIMARY KEY (plan_id, part_id),  
-    FOREIGN KEY (plan_id) REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
-    FOREIGN KEY (part_id) REFERENCES part(part_id) ON DELETE CASCADE,
-    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE SET NULL
+    PRIMARY KEY (plan_id, part_id, supplier_id)
 );
 
 CREATE TABLE tutorial (
     tutorial_id INT PRIMARY KEY AUTO_INCREMENT,
-    plan_id INT,
-    part_id INT,
+    plan_id INT REFERENCES plan_part(plan_id) ON DELETE CASCADE,
+    part_id INT REFERENCES plan_part(part_id) ON DELETE CASCADE,
     video_link VARCHAR(255),
-    description TEXT,
-    FOREIGN KEY (plan_id) REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
-    FOREIGN KEY (part_id) REFERENCES part(part_id) ON DELETE CASCADE
+    description TEXT
 );
 
 CREATE TABLE post (
     post_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
+    user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
     title VARCHAR(255),
     post_description TEXT,
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES app_user(app_user_id) ON DELETE CASCADE
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE comment (
+CREATE TABLE `comment` (
     comment_id INT PRIMARY KEY AUTO_INCREMENT,
-    post_id INT,
-    user_id INT,
+    post_id INT REFERENCES post(post_id) ON DELETE CASCADE,
+    user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
     comment_text TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES post(post_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES app_user(app_user_id) ON DELETE CASCADE
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 SET SQL_SAFE_UPDATES = 0;
