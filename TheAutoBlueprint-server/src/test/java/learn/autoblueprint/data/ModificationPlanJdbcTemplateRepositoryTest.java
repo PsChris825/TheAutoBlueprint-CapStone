@@ -31,8 +31,16 @@ class ModificationPlanJdbcTemplateRepositoryTest {
     @Test
     void findAll_ShouldReturnAllModificationPlans() {
         List<ModificationPlan> plans = repository.findAll();
+
         assertNotNull(plans);
-        assertTrue(plans.size() > 0);
+        assertFalse(plans.isEmpty()); // Ensure the list is not empty
+
+        // Check that each plan has the necessary fields set
+        for (ModificationPlan plan : plans) {
+            assertNotNull(plan.getPlanId());
+            assertNotNull(plan.getPlanName());
+            // Add additional assertions as needed
+        }
     }
 
     @Test

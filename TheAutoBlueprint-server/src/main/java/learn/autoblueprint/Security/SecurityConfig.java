@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,13 +41,21 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/auto-blueprint/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/auto-blueprint/*").hasAuthority("ADMIN")
 
-                .antMatchers(HttpMethod.POST, "/api/car").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/car").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/car/*").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/car/*").hasAuthority("ADMIN")
 
+                .antMatchers(HttpMethod.POST, "/api/part-category").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/part-category").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/part-category/*").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/part-category/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/part-category/*").hasAuthority("ADMIN")
+
                 .antMatchers(HttpMethod.POST, "/api/modification-plan").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/modification-plan").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/modification-plan/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/modification-plan/appUser/*").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/modification-plan/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/modification-plan/*").hasAuthority("ADMIN")
 

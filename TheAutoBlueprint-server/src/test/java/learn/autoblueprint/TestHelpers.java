@@ -4,6 +4,7 @@ import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Car;
 import learn.autoblueprint.models.ModificationPlan;
 import learn.autoblueprint.models.PartCategory;
+import learn.autoblueprint.models.PlanPart;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -78,8 +79,8 @@ public class TestHelpers {
     public static ModificationPlan createValidModificationPlan() {
         ModificationPlan plan = new ModificationPlan();
         plan.setPlanId(1);
-        plan.setAppUserId(createValidAppUser());
-        plan.setCarId(createValidCar());
+        plan.setAppUserId(1);
+        plan.setCarId(1);
         plan.setPlanName("Test Plan");
         plan.setPlanDescription("Test Description");
         plan.setPlanHoursOfCompletion(5);
@@ -88,13 +89,16 @@ public class TestHelpers {
         plan.setCostVersusBudget(BigDecimal.valueOf(200));
         plan.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         plan.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        PlanPart part = new PlanPart();
+        part.setPrice(BigDecimal.valueOf(800));
+        plan.setPlanParts(Collections.singletonList(part));
         return plan;
     }
 
-    public static ModificationPlan makeNewModificationPlan() {
+        public static ModificationPlan makeNewModificationPlan() {
         ModificationPlan plan = new ModificationPlan();
-        plan.setAppUserId(createValidAppUser());
-        plan.setCarId(makeNewCar());
+        plan.setAppUserId(1);
+        plan.setCarId(2);
         plan.setPlanName("New Plan");
         plan.setPlanDescription("New Description");
         plan.setPlanHoursOfCompletion(10);
@@ -103,6 +107,7 @@ public class TestHelpers {
         plan.setCostVersusBudget(BigDecimal.valueOf(500));
         plan.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         plan.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        plan.setPlanParts(Collections.singletonList(new PlanPart()));
         return plan;
     }
 

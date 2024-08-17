@@ -2,21 +2,22 @@ package learn.autoblueprint.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ModificationPlan {
 
     private Integer planId;
-    private AppUser appUserId;
-    private Car carId;
-    private List<PlanPart> planParts;
-    private String planName; // New field
+    private int appUserId;
+    private int carId;
+    private List<PlanPart> planParts = new ArrayList<>();
+    private String planName;
     private String planDescription;
     private Integer planHoursOfCompletion;
-    private BigDecimal budget;
-    private BigDecimal totalCost;
-    private BigDecimal costVersusBudget;
+    private BigDecimal budget = BigDecimal.ZERO;
+    private BigDecimal totalCost = BigDecimal.ZERO;
+    private BigDecimal costVersusBudget = BigDecimal.ZERO;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -28,19 +29,19 @@ public class ModificationPlan {
         this.planId = planId;
     }
 
-    public AppUser getAppUserId() {
+    public int getAppUserId() {
         return appUserId;
     }
 
-    public void setAppUserId(AppUser appUserId) {
+    public void setAppUserId(int appUserId) {
         this.appUserId = appUserId;
     }
 
-    public Car getCarId() {
+    public int getCarId() {
         return carId;
     }
 
-    public void setCarId(Car carId) {
+    public void setCarId(int carId) {
         this.carId = carId;
     }
 
@@ -50,6 +51,8 @@ public class ModificationPlan {
 
     public void setPlanParts(List<PlanPart> planParts) {
         this.planParts = planParts;
+        calculatePlanHours();
+        calculateTotalCost();
     }
 
     public String getPlanName() {
@@ -119,10 +122,20 @@ public class ModificationPlan {
     public void calculateTotalCost() {
         BigDecimal total = BigDecimal.ZERO;
         for (PlanPart part : planParts) {
-            total = total.add(part.getPrice());
+            if (part.getPrice() != null) {
+                total = total.add(part.getPrice());
+            }
         }
         this.totalCost = total;
         this.costVersusBudget = total.subtract(budget);
+    }
+
+    public void calculatePlanHours() {
+        int totalHours = 0;
+        for (PlanPart part : planParts) {
+            totalHours += part.getTimeToInstall();
+        }
+        this.planHoursOfCompletion = totalHours;
     }
 
     @Override
@@ -130,7 +143,7 @@ public class ModificationPlan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ModificationPlan that = (ModificationPlan) o;
-        return Objects.equals(planId, that.planId) && Objects.equals(appUserId, that.appUserId) && Objects.equals(carId, that.carId) && Objects.equals(planParts, that.planParts) && Objects.equals(planName, that.planName) && Objects.equals(planDescription, that.planDescription) && Objects.equals(planHoursOfCompletion, that.planHoursOfCompletion) && Objects.equals(budget, that.budget) && Objects.equals(totalCost, that.totalCost) && Objects.equals(costVersusBudget, that.costVersusBudget) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        return appUserId == that.appUserId && carId == that.carId && Objects.equals(planId, that.planId) && Objects.equals(planParts, that.planParts) && Objects.equals(planName, that.planName) && Objects.equals(planDescription, that.planDescription) && Objects.equals(planHoursOfCompletion, that.planHoursOfCompletion) && Objects.equals(budget, that.budget) && Objects.equals(totalCost, that.totalCost) && Objects.equals(costVersusBudget, that.costVersusBudget) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override

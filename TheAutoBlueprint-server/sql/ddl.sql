@@ -43,13 +43,16 @@ CREATE TABLE part (
     OEM_number VARCHAR(255),
     weight DECIMAL(10, 2),
     details TEXT,
-    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
+    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL,
+    car_id INT REFERENCES car(car_id) ON DELETE SET NULL
 );
 
 CREATE TABLE plan_part (
     plan_part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_id INT REFERENCES part(part_id) ON DELETE CASCADE,
+    plan_id INT REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
     price DECIMAL(10, 2),
+    time_to_install INT,
     tutorial_url VARCHAR(255),
     supplier_url VARCHAR(255)
 );
@@ -57,8 +60,7 @@ CREATE TABLE plan_part (
 CREATE TABLE modification_plan (
     plan_id INT PRIMARY KEY AUTO_INCREMENT,
     app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
-    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
-    plan_part_id INT REFERENCES plan_part(plan_part_id) ON DELETE SET NULL,
+    car_id INT REFERENCES car(car_id) ON DELETE CASCADE,
     plan_name VARCHAR(255),
     plan_description TEXT,
     plan_hours_of_completion INT,

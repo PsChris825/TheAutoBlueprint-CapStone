@@ -45,13 +45,16 @@ CREATE TABLE part (
     OEM_number VARCHAR(255),
     weight DECIMAL(10, 2),
     details TEXT,
-    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL
+    category_id INT REFERENCES part_category(category_id) ON DELETE SET NULL,
+    car_id INT REFERENCES car(car_id) ON DELETE SET NULL
 );
 
 CREATE TABLE plan_part (
     plan_part_id INT PRIMARY KEY AUTO_INCREMENT,
     part_id INT REFERENCES part(part_id) ON DELETE CASCADE,
+    plan_id INT REFERENCES modification_plan(plan_id) ON DELETE CASCADE,
     price DECIMAL(10, 2),
+    time_to_install INT,
     tutorial_url VARCHAR(255),
     supplier_url VARCHAR(255)
 );
@@ -59,8 +62,7 @@ CREATE TABLE plan_part (
 CREATE TABLE modification_plan (
     plan_id INT PRIMARY KEY AUTO_INCREMENT,
     app_user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
-    car_id INT REFERENCES car(car_id) ON DELETE SET NULL,
-    plan_part_id INT REFERENCES plan_part(plan_part_id) ON DELETE SET NULL,
+    car_id INT REFERENCES car(car_id) ON DELETE CASCADE,
     plan_name VARCHAR(255),
     plan_description TEXT,
     plan_hours_of_completion INT,
@@ -144,17 +146,17 @@ BEGIN
         ('Suspension'),
         ('Body');
 
-    INSERT INTO part (part_name, part_number, manufacturer, OEM_number, weight, details, category_id) VALUES
-        ('Air Filter', 'AF123', 'K&N', 'OEM456', 1.5, 'High-flow air filter', 1),
-        ('Shock Absorber', 'SA789', 'Bilstein', 'OEM123', 4.2, 'Heavy-duty shock absorber', 2);
+    INSERT INTO part (part_name, part_number, manufacturer, OEM_number, weight, details, category_id, car_id) VALUES
+        ('Air Filter', 'AF123', 'K&N', 'OEM456', 1.5, 'High-flow air filter', 1, 1),
+        ('Shock Absorber', 'SA789', 'Bilstein', 'OEM123', 4.2, 'Heavy-duty shock absorber', 2, 2);
 
-    INSERT INTO plan_part (part_id, price, tutorial_url, supplier_url) VALUES
-        (1, 50.00, 'https://www.youtube.com/watch?v=example', 'http://example.com/supplier1'),
-        (2, 150.00, 'https://www.youtube.com/watch?v=example2', 'http://example.com/supplier2');
+    INSERT INTO plan_part (part_id, plan_id, price, time_to_install, tutorial_url, supplier_url) VALUES
+        (1, 1, 50.00, 2,  'https://www.youtube.com/watch?v=example', 'http://example.com/supplier1'),
+        (2, 2, 150.00, 3, 'https://www.youtube.com/watch?v=example2', 'http://example.com/supplier2');
 
-    INSERT INTO modification_plan (app_user_id, car_id, plan_part_id, plan_name, plan_description, plan_hours_of_completion, budget, total_cost, cost_versus_budget) VALUES
-        (1, 1, 1, 'Plan 1', 'Basic Upgrades', 10, 5000.00, 1200.00, 3800.00),
-        (2, 2, 1, 'Plan 2', 'Performance Mods', 20, 10000.00, 8000.00, 2000.00);
+    INSERT INTO modification_plan (app_user_id, car_id, plan_name, plan_description, plan_hours_of_completion, budget, total_cost, cost_versus_budget) VALUES
+        (1, 1, 'Plan 1', 'Basic Upgrades', 10, 5000.00, 1200.00, 3800.00),
+        (2, 2, 'Plan 2', 'Performance Mods', 20, 10000.00, 8000.00, 2000.00);
 
     INSERT INTO post (user_id, title, post_description, image_url) VALUES
         (1, 'My Car Mods', 'Check out the mods I did on my car', 'http://example.com/car1.jpg'),
