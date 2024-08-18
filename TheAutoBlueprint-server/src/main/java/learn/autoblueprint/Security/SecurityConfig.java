@@ -59,6 +59,30 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/modification-plan/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/modification-plan/*").hasAuthority("ADMIN")
 
+                .antMatchers(HttpMethod.GET, "/api/plan-part").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/plan-part/*").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/plan-part").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/plan-part/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/plan-part/*").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/api/parts").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/parts/*").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/parts").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/parts/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/parts/*").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/comments").permitAll()
+                .antMatchers(HttpMethod.GET, "/comments/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/comments").authenticated()
+                .antMatchers(HttpMethod.PUT, "/comments/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/comments/*").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/posts/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/posts").authenticated()
+                .antMatchers(HttpMethod.PUT, "/posts/*").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/posts/*").hasAuthority("ADMIN")
+
                 .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(authenticationManager(config), jwtConverter), BasicAuthenticationFilter.class)
