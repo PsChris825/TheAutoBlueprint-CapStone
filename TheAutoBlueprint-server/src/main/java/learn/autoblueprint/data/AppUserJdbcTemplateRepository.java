@@ -41,6 +41,7 @@ public class AppUserJdbcTemplateRepository implements AppUserRepository {
                 .orElse(null);
     }
 
+
     @Override
     public AppUser create(AppUser user) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)

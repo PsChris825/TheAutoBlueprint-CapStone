@@ -122,8 +122,8 @@ public class TestHelpers {
         part.setOEMNumber("OEM123");
         part.setWeight(new BigDecimal("10.00"));
         part.setDetails("Valid Details");
-        part.setCategory(makeExistingPartCategory());
-        part.setCar(createValidCar());
+        part.setCategoryId(makeExistingPartCategory().getCategoryId());
+        part.setCarId(createValidCar().getCarId());
         return part;
     }
 
@@ -136,8 +136,8 @@ public class TestHelpers {
         part.setOEMNumber("OEM123");
         part.setWeight(new BigDecimal("10.00"));
         part.setDetails("New Details");
-        part.setCategory(makePartCategory(2, "New Category"));
-        part.setCar(makeNewCar());
+        part.setCategoryId(makePartCategory(2, "New Category").getCategoryId());
+        part.setCarId(makeNewCar().getCarId());
         return part;
     }
 
@@ -150,8 +150,8 @@ public class TestHelpers {
         part.setOEMNumber("OEM" + id);
         part.setWeight(new BigDecimal("10.00"));
         part.setDetails("Details " + id);
-        part.setCategory(makePartCategory(id, "Category " + id));
-        part.setCar(makeCar(id));
+        part.setCategoryId(makePartCategory(id, "Category " + id).getCategoryId());
+        part.setCarId(makeCar(id).getCarId());
         return part;
     }
 
@@ -162,8 +162,8 @@ public class TestHelpers {
     public static PlanPart createValidPlanPart() {
         PlanPart planPart = new PlanPart();
         planPart.setPlanPartId(1);
-        planPart.setPart(createValidPart());
-        planPart.setPlan(createValidModificationPlan());
+        planPart.setPartId(1);
+        planPart.setPlanId(1);
         planPart.setPrice(BigDecimal.valueOf(100.00));
         planPart.setTutorialUrl("http://example.com/tutorial");
         planPart.setSupplierUrl("http://example.com/supplier");
@@ -174,8 +174,8 @@ public class TestHelpers {
     public static PlanPart makeNewPlanPart() {
         PlanPart planPart = new PlanPart();
         planPart.setPlanPartId(1);
-        planPart.setPart(makeNewPartWithId());
-        planPart.setPlan(makeNewModificationPlan());
+        planPart.setPartId(1);
+        planPart.setPlanId(1);
         planPart.setPrice(BigDecimal.valueOf(200.00));
         planPart.setTutorialUrl("http://example.com/new_tutorial");
         planPart.setSupplierUrl("http://example.com/new_supplier");
@@ -192,16 +192,16 @@ public class TestHelpers {
         part.setOEMNumber("OEM123");
         part.setWeight(new BigDecimal("10.00"));
         part.setDetails("New Details");
-        part.setCategory(makePartCategory(2, "New Category"));
-        part.setCar(makeNewCar());
+        part.setCategoryId(makePartCategory(2, "New Category").getCategoryId());
+        part.setCarId(makeNewCar().getCarId());
         return part;
     }
 
     public static PlanPart makePlanPart(int id) {
         PlanPart planPart = new PlanPart();
         planPart.setPlanPartId(id);
-        planPart.setPart(makePart(id));
-        planPart.setPlan(makeModificationPlan(id));
+        planPart.setPartId(id);
+        planPart.setPlanId(id);
         planPart.setPrice(BigDecimal.valueOf(100.00 + id));
         planPart.setTutorialUrl("http://example.com/tutorial" + id);
         planPart.setSupplierUrl("http://example.com/supplier" + id);

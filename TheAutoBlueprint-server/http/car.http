@@ -7,36 +7,41 @@ Content-Type: application/json
   "password": "P@ssw0rd!"
 }
 
+### GET Request to Retrieve a Car by ID
+GET http://localhost:8080/api/car/1
 
-### Add a Car
-POST http://localhost:8080/api/carId
-Content-Type: application/json
-Authorization: Bearer 
 
-{
-  "make": "Toyota",
-  "model": "Corolla",
-  "year": 2022,
-  "engine": "1.8L I4",
-  "power": 139,
-  "driveType": "FWD",
-  "transmissionType": "CVT"
-}
-
-### Find a Car by ID
-GET http://localhost:8080/api/carId/1
-Accept: application/json
-
-### Add a Car
-POST http://localhost:8080/api/carId
+### POST Request to Add a New Car
+POST http://localhost:8080/api/car
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzgxOTZ9.saywIa0QrlgVK1w-HlUT0u8Lm3XvRzvx6cIF1VopFD0
 Content-Type: application/json
 
 {
   "make": "Toyota",
   "model": "Corolla",
   "year": 2022,
-  "engine": "1.8L I4",
+  "engine": "1.8L",
   "power": 139,
   "driveType": "FWD",
-  "transmissionType": "CVT"
+  "transmissionType": "Automatic"
 }
+
+### PUT Request to Update an Existing Car
+PUT http://localhost:8080/api/car/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzEyNDB9.b2gZHLhKKPsX7cx-s6vOP-f3Cx6sJJwSMPTQmrdnT3c
+Content-Type: application/json
+
+{
+  "carId": 1,
+  "make": "Honda",
+  "model": "Civic",
+  "year": 2023,
+  "engine": "2.0L",
+  "power": 169,
+  "driveType": "FWD",
+  "transmissionType": "Automatic"
+}
+
+### DELETE Request to Remove a Car by ID
+DELETE http://localhost:8080/api/car/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzEyNDB9.b2gZHLhKKPsX7cx-s6vOP-f3Cx6sJJwSMPTQmrdnT3c

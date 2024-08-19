@@ -1,4 +1,4 @@
-package learn.autoblueprint.Security;
+package learn.autoblueprint.security;
 
 import learn.autoblueprint.data.AppUserRepository;
 import learn.autoblueprint.models.AppUser;
@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AppUserService implements UserDetailsService {
@@ -24,6 +26,7 @@ public class AppUserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        return user; // AppUser should implement UserDetails
+        return user;
     }
+
 }

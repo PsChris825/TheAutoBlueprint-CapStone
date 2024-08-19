@@ -26,11 +26,12 @@ public class CarService {
             return result;
         }
 
-        if (car.getCarId() != 0) {
+        if (car.getCarId() != null && car.getCarId() != 0) {
             result.addMessage("New car must not have id set.");
             return result;
         }
 
+        car.setCarId(0);
         car = repository.add(car);
         result.setPayload(car);
         return result;

@@ -38,15 +38,17 @@ public class CommentService {
             return result;
         }
 
-        if (comment.getCommentId() != 0) {
+        if (comment.getCommentId() != null && comment.getCommentId() != 0) {
             result.addMessage("New comment must not have id set.");
             return result;
         }
 
+        comment.setCommentId(0);
         comment = repository.add(comment);
         result.setPayload(comment);
         return result;
     }
+
 
     public Result<Comment> update(Comment comment) {
         Result<Comment> result = validate(comment);

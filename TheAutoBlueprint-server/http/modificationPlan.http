@@ -1,0 +1,61 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all modification plans
+GET http://localhost:8080/api/modification-plan
+Accept: application/json
+
+### Get modification plan by ID
+GET http://localhost:8080/api/modification-plan/1
+Accept: application/json
+
+### Get modification plans by user ID
+GET http://localhost:8080/api/modification-plan/appUser/1
+Accept: application/json
+
+### Add a new modification plan
+POST http://localhost:8080/api/modification-plan
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwODAwNTB9.kGGtmEgodJC4_h8SKSWgYpY1Om8yqehNy3mSt5fC-Qs
+
+{
+  "planName": "New Plan",
+  "planDescription": "This is a new modification plan",
+  "appUserId": 1,
+  "carId": 1,
+  "planHoursOfCompletion": 10,
+  "budget": 1000.00,
+  "totalCost": 0.00,
+  "costVersusBudget": 0.00,
+  "createdAt": "2024-08-18T18:06:35.387Z",
+  "updatedAt": "2024-08-18T18:06:35.387Z"
+}
+
+### Update a modification plan
+PUT http://localhost:8080/api/modification-plan/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwODAwNTB9.kGGtmEgodJC4_h8SKSWgYpY1Om8yqehNy3mSt5fC-Qs
+
+{
+  "planId": 1,
+  "planName": "Updated Plan",
+  "planDescription": "This is an updated modification plan",
+  "appUserId": 1,
+  "carId": 1,
+  "planHoursOfCompletion": 15,
+  "budget": 1500.00,
+  "totalCost": 500.00,
+  "costVersusBudget": 1000.00,
+  "createdAt": "2024-08-18T18:06:35.387Z",
+  "updatedAt": "2024-08-18T18:06:35.387Z"
+}
+
+### Delete a modification plan
+DELETE http://localhost:8080/api/modification-plan/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzQ3NzV9.ZbPM7eaYkae4Gd-EC_hP3AP-RDKSLyLO_jpiKuXn6Bw

@@ -1,0 +1,47 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all posts
+GET http://localhost:8080/posts
+Accept: application/json
+
+### Get post by ID
+GET http://localhost:8080/posts/1
+Accept: application/json
+
+### Get posts by user ID
+GET http://localhost:8080/posts/user/1
+Accept: application/json
+
+### Add a new post
+POST http://localhost:8080/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzM3MDZ9.OhLp-NWR1F_NOkgNbBBQhzUcloaek98ATPlNiGkYPSQ
+
+{
+  "title": "New Post",
+  "postDescription": "This is the content of the new post",
+  "userId": 1
+}
+
+### Update a post
+PUT http://localhost:8080/posts/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzE5MTF9.6j_Tli0M_OWDiTmBSysMUCcby3viAF1BDG1D7u1MV04
+
+{
+  "postId": 1,
+  "title": "Updated Post",
+  "postDescription": "This is the updated content of the post",
+  "userId": 1
+}
+
+### Delete a post
+DELETE http://localhost:8080/posts/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzE5MTF9.6j_Tli0M_OWDiTmBSysMUCcby3viAF1BDG1D7u1MV04

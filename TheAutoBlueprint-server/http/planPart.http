@@ -1,0 +1,51 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all plan parts
+GET http://localhost:8080/api/plan-part
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzk3OTd9.DnTZ0F2xPVt_xP01EzVCLSonFKANMqaum3BdiOV-ODw
+
+### Get plan part by ID
+GET http://localhost:8080/api/plan-part/1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzk3OTd9.DnTZ0F2xPVt_xP01EzVCLSonFKANMqaum3BdiOV-ODw
+
+### Add a new plan part
+POST http://localhost:8080/api/plan-part
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzk3OTd9.DnTZ0F2xPVt_xP01EzVCLSonFKANMqaum3BdiOV-ODw
+
+{
+  "planId": 1,
+  "partId": 1,
+  "price": 100.00,
+  "tutorialUrl": "http://example.com/tutorial",
+  "supplierUrl": "http://example.com/supplier",
+  "timeToInstall": 2
+}
+
+### Update a plan part
+PUT http://localhost:8080/api/plan-part/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzk3OTd9.DnTZ0F2xPVt_xP01EzVCLSonFKANMqaum3BdiOV-ODw
+
+{
+  "planPartId": 1,
+  "planId": 1,
+  "partId": 1,
+  "price": 150.00,
+  "tutorialUrl": "http://example.com/tutorial-updated",
+  "supplierUrl": "http://example.com/supplier-updated",
+  "timeToInstall": 3
+}
+
+### Delete a plan part
+DELETE http://localhost:8080/api/plan-part/1
+Authorization: Bearer <your_jwt_token>

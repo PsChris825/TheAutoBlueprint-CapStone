@@ -1,0 +1,39 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all part categories
+GET http://localhost:8080/api/part-category
+Accept: application/json
+
+### Get part category by ID
+GET http://localhost:8080/api/part-category/1
+Accept: application/json
+
+### Add a new part category
+POST http://localhost:8080/api/part-category
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzgxOTZ9.saywIa0QrlgVK1w-HlUT0u8Lm3XvRzvx6cIF1VopFD0
+
+{
+  "categoryName": "New Category"
+}
+
+### Update a part category
+PUT http://localhost:8080/api/part-category/1
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token>
+
+{
+  "categoryId": 1,
+  "categoryName": "Updated Category"
+}
+
+### Delete a part category
+DELETE http://localhost:8080/api/part-category/1
+Authorization: Bearer <your_jwt_token>

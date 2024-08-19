@@ -1,25 +1,30 @@
-package learn.autoblueprint.Security;
+package learn.autoblueprint.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import learn.autoblueprint.models.AppUser;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
+import learn.autoblueprint.security.AppUserService;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class JwtConverter {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Consider storing this securely
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final String ISSUER = "auto-blueprint";
     private final int EXPIRATION_MINUTES = 15;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
+    private final AppUserService appUserService;
+
+    public JwtConverter(AppUserService appUserService) {
+        this.appUserService = appUserService;
+    }
 
     public String getTokenFromUser(AppUser user) {
         System.out.println("Generating token for user: " + user.getUsername());
@@ -41,32 +46,32 @@ public class JwtConverter {
     public AppUser getUserFromToken(String token) {
         System.out.println("Parsing token: " + token);
 
-        if (token == null || !token.startsWith("Bearer ")) {
+        if (token == null) {
             return null;
         }
 
         try {
-            String trimmedToken = token.substring(7); // Remove "Bearer " prefix
-
             Jws<Claims> jws = Jwts.parserBuilder()
-                    .requireIssuer(ISSUER)
                     .setSigningKey(key)
+                    .requireIssuer(ISSUER)
                     .build()
-                    .parseClaimsJws(trimmedToken);
+                    .parseClaimsJws(token);
 
             Claims claims = jws.getBody();
             String username = claims.getSubject();
             String authStr = claims.get("authorities", String.class);
             int appUserId = claims.get("app_user_id", Integer.class);
 
-            return new AppUser(appUserId, username, null, true,
-                    Arrays.stream(authStr.split(",")).toList());
+            List<String> roles = Arrays.asList(authStr.split(","));
+            return new AppUser(appUserId, username, null, true, roles);
 
+        } catch (ExpiredJwtException e) {
+            System.err.println("JWT token is expired: " + e.getMessage());
         } catch (JwtException e) {
-            // Log the exception for debugging and audit purposes
             System.err.println("JWT parsing failed: " + e.getMessage());
         }
 
         return null;
     }
+
 }

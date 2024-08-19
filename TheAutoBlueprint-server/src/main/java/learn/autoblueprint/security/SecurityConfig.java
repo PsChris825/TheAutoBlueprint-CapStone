@@ -1,4 +1,4 @@
-package learn.autoblueprint.Security;
+package learn.autoblueprint.security;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
@@ -65,8 +65,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/plan-part/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/plan-part/*").hasAuthority("ADMIN")
 
-                .antMatchers(HttpMethod.GET, "/api/parts").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/parts/*").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/parts").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/parts/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/parts").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/parts/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/parts/*").hasAuthority("ADMIN")
@@ -79,6 +79,7 @@ public class SecurityConfig {
 
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/posts/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/posts/user/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/posts").authenticated()
                 .antMatchers(HttpMethod.PUT, "/posts/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/posts/*").hasAuthority("ADMIN")

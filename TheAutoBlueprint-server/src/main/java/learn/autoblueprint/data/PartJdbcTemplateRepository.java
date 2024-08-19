@@ -95,27 +95,31 @@ public class PartJdbcTemplateRepository implements PartRepository {
         args.put("OEM_number", part.getOEMNumber());
         args.put("weight", part.getWeight());
         args.put("details", part.getDetails());
-        args.put("category_id", part.getCategory().getCategoryId());
-        args.put("car_id", part.getCar().getCarId());
+        args.put("category_id", part.getCategoryId());
+        args.put("car_id", part.getCarId());
 
-        part.setPartId(insert.executeAndReturnKey(args).intValue());
+        // Debugging logs
+        System.out.println("Inserting part with args: " + args);
+
+        Number key = insert.executeAndReturnKey(args);
+        part.setPartId(key.intValue());
         return part;
     }
 
     @Override
     public boolean update(Part part) {
         final String sql = """
-                update part set
-                    part_name = ?,
-                    part_number = ?,
-                    manufacturer = ?,
-                    OEM_number = ?,
-                    weight = ?,
-                    details = ?,
-                    category_id = ?,
-                    car_id = ?
-                where part_id = ?;
-                """;
+            update part set
+                part_name = ?,
+                part_number = ?,
+                manufacturer = ?,
+                OEM_number = ?,
+                weight = ?,
+                details = ?,
+                category_id = ?,
+                car_id = ?
+            where part_id = ?;
+            """;
 
         int rowsAffected = jdbcTemplate.update(sql,
                 part.getPartName(),
@@ -124,8 +128,8 @@ public class PartJdbcTemplateRepository implements PartRepository {
                 part.getOEMNumber(),
                 part.getWeight(),
                 part.getDetails(),
-                part.getCategory().getCategoryId(),
-                part.getCar().getCarId(),
+                part.getCategoryId(),
+                part.getCarId(),
                 part.getPartId());
         return rowsAffected > 0;
     }
@@ -134,5 +138,4 @@ public class PartJdbcTemplateRepository implements PartRepository {
     public boolean deleteById(int partId) {
         return jdbcTemplate.update("delete from part where part_id = ?", partId) > 0;
     }
-
 }

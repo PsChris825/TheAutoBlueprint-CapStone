@@ -8,17 +8,9 @@ import java.util.Objects;
 public class Car {
 
     private Integer carId;
-
-    @NotEmpty(message = "Make must not be empty")
     private String make;
-
-    @NotEmpty(message = "Model must not be empty")
     private String model;
-
-    @NotNull(message = "Year must not be null")
-    @Min(value = 1900, message = "Year must be between 1900 and the current year")
     private Integer year;
-
     private String engine;
     private Integer power;
     private String driveType;

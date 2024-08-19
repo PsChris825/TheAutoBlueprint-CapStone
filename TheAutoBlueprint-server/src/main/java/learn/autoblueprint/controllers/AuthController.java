@@ -1,6 +1,6 @@
 package learn.autoblueprint.controllers;
 
-import learn.autoblueprint.Security.JwtConverter;
+import learn.autoblueprint.security.JwtConverter;
 import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Credentials;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

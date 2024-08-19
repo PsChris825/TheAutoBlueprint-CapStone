@@ -3,7 +3,6 @@ package learn.autoblueprint.data;
 import learn.autoblueprint.data.mappers.ModificationPlanMapper;
 import learn.autoblueprint.data.mappers.PlanPartMapper;
 import learn.autoblueprint.models.ModificationPlan;
-import learn.autoblueprint.models.Part;
 import learn.autoblueprint.models.PlanPart;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -65,11 +64,14 @@ public class ModificationPlanJdbcTemplateRepository implements ModificationPlanR
 
                 int planPartId = rs.getInt("plan_part_id");
                 if (planPartId > 0) {
-                    PlanPartMapper planPartMapper = new PlanPartMapper();
-                    PlanPart planPart = planPartMapper.mapRow(rs, rs.getRow());
-
-                    // Set the plan reference for the PlanPart object
-                    planPart.setPlan(planMap.get(planId));
+                    PlanPart planPart = new PlanPart();
+                    planPart.setPlanPartId(planPartId);
+                    planPart.setPartId(rs.getInt("part_id"));
+                    planPart.setPlanId(planId);
+                    planPart.setPrice(rs.getBigDecimal("price"));
+                    planPart.setTimeToInstall(rs.getInt("time_to_install"));
+                    planPart.setTutorialUrl(rs.getString("tutorial_url"));
+                    planPart.setSupplierUrl(rs.getString("supplier_url"));
 
                     planMap.get(planId).getPlanParts().add(planPart);
                 }
@@ -84,8 +86,6 @@ public class ModificationPlanJdbcTemplateRepository implements ModificationPlanR
         }
         return plans;
     }
-
-
 
     @Override
     public List<PlanPart> findPlanPartsByModificationPlanId(int planId) {

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
@@ -30,7 +29,7 @@ public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
                 JOIN part_category pc ON p.category_id = pc.category_id
                 JOIN car c ON p.car_id = c.car_id
                 """;
-        return jdbcTemplate.query(sql, new PlanPartMapper());
+        return jdbcTemplate.query(sql, planPartMapper);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
                 JOIN car c ON p.car_id = c.car_id
                 WHERE pp.plan_part_id = ?
                 """;
-        List<PlanPart> planParts = jdbcTemplate.query(sql, new PlanPartMapper(), planPartId);
+        List<PlanPart> planParts = jdbcTemplate.query(sql, planPartMapper, planPartId);
         return planParts.isEmpty() ? null : planParts.get(0);
     }
 
@@ -59,7 +58,7 @@ public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
                 JOIN car c ON p.car_id = c.car_id
                 WHERE pp.plan_id = ?
                 """;
-        return jdbcTemplate.query(sql, new PlanPartMapper(), planId);
+        return jdbcTemplate.query(sql, planPartMapper, planId);
     }
 
     @Override
@@ -69,8 +68,8 @@ public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
                 .usingGeneratedKeyColumns("plan_part_id");
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("part_id", planPart.getPart().getPartId());
-        args.put("plan_id", planPart.getPlan().getPlanId());
+        args.put("part_id", planPart.getPartId());
+        args.put("plan_id", planPart.getPlanId());
         args.put("price", planPart.getPrice());
         args.put("tutorial_url", planPart.getTutorialUrl());
         args.put("supplier_url", planPart.getSupplierUrl());
@@ -93,8 +92,8 @@ public class PlanPartJdbcTemplateRepository implements PlanPartRepository {
                 WHERE plan_part_id = ?
                 """;
         int rowsAffected = jdbcTemplate.update(sql,
-                planPart.getPart().getPartId(),
-                planPart.getPlan().getPlanId(),
+                planPart.getPartId(),
+                planPart.getPlanId(),
                 planPart.getPrice(),
                 planPart.getTutorialUrl(),
                 planPart.getSupplierUrl(),

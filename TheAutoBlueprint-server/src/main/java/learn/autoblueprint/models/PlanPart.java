@@ -6,24 +6,24 @@ import java.util.Objects;
 public class PlanPart {
 
     private Integer planPartId;
-    private Part part;
-    private ModificationPlan plan;
+    private int planId;
+    private int partId;
     private BigDecimal price;
     private String tutorialUrl;
     private String supplierUrl;
-    private int timeToInstall; // New field
+    private int timeToInstall;
 
     public PlanPart() {
     }
 
-    public PlanPart(Integer planPartId, Part part, ModificationPlan plan, BigDecimal price, String tutorialUrl, String supplierUrl, int timeToInstall) {
+    public PlanPart(Integer planPartId, int planId, int partId, BigDecimal price, String tutorialUrl, String supplierUrl, int timeToInstall) {
         this.planPartId = planPartId;
-        this.part = part;
-        this.plan = plan;
+        this.planId = planId;
+        this.partId = partId;
         this.price = price;
         this.tutorialUrl = tutorialUrl;
         this.supplierUrl = supplierUrl;
-        this.timeToInstall = timeToInstall; // Initialize new field
+        this.timeToInstall = timeToInstall;
     }
 
     public Integer getPlanPartId() {
@@ -34,20 +34,20 @@ public class PlanPart {
         this.planPartId = planPartId;
     }
 
-    public Part getPart() {
-        return part;
+    public int getPlanId() {
+        return planId;
     }
 
-    public void setPart(Part part) {
-        this.part = part;
+    public void setPlanId(int planId) {
+        this.planId = planId;
     }
 
-    public ModificationPlan getPlan() {
-        return plan;
+    public int getPartId() {
+        return partId;
     }
 
-    public void setPlan(ModificationPlan plan) {
-        this.plan = plan;
+    public void setPartId(int partId) {
+        this.partId = partId;
     }
 
     public BigDecimal getPrice() {
@@ -87,10 +87,8 @@ public class PlanPart {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlanPart planPart = (PlanPart) o;
-        return timeToInstall == planPart.timeToInstall &&
+        return planId == planPart.planId && partId == planPart.partId && timeToInstall == planPart.timeToInstall &&
                 Objects.equals(planPartId, planPart.planPartId) &&
-                Objects.equals(part, planPart.part) &&
-                Objects.equals(plan, planPart.plan) &&
                 Objects.equals(price, planPart.price) &&
                 Objects.equals(tutorialUrl, planPart.tutorialUrl) &&
                 Objects.equals(supplierUrl, planPart.supplierUrl);
@@ -98,15 +96,15 @@ public class PlanPart {
 
     @Override
     public int hashCode() {
-        return Objects.hash(planPartId, part, plan, price, tutorialUrl, supplierUrl, timeToInstall);
+        return Objects.hash(planPartId, planId, partId, price, tutorialUrl, supplierUrl, timeToInstall);
     }
 
     @Override
     public String toString() {
         return "PlanPart{" +
                 "planPartId=" + planPartId +
-                ", part=" + part +
-                ", plan=" + plan +
+                ", planId=" + planId +
+                ", partId=" + partId +
                 ", price=" + price +
                 ", tutorialUrl='" + tutorialUrl + '\'' +
                 ", supplierUrl='" + supplierUrl + '\'' +

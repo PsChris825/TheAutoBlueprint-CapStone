@@ -1,7 +1,11 @@
 package learn.autoblueprint.domain;
 
+import learn.autoblueprint.data.CarRepository;
+import learn.autoblueprint.data.PartCategoryRepository;
 import learn.autoblueprint.data.PartRepository;
+import learn.autoblueprint.models.Car;
 import learn.autoblueprint.models.Part;
+import learn.autoblueprint.models.PartCategory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +14,13 @@ import java.util.List;
 public class PartService {
 
     private final PartRepository partRepository;
+    private final CarRepository carRepository;
+    private final PartCategoryRepository categoryRepository;
 
-    public PartService(PartRepository partRepository) {
+    public PartService(PartRepository partRepository, CarRepository carRepository, PartCategoryRepository categoryRepository) {
         this.partRepository = partRepository;
+        this.carRepository = carRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Part> findAll() {
@@ -31,6 +39,27 @@ public class PartService {
         Result<Part> result = validate(part);
         if (!result.isSuccess()) {
             return result;
+        }
+
+        System.out.println("Adding part: " + part);
+
+        if (part.getCarId() > 0) {
+            Car car = carRepository.findById(part.getCarId());
+            if (car == null) {
+                result.addMessage("Car not found.", ResultType.NOT_FOUND);
+                return result;
+            }
+        } else {
+            result.addMessage("Car is required.", ResultType.INVALID);
+            return result;
+        }
+
+        if (part.getCategoryId() > 0) {
+            PartCategory category = categoryRepository.findById(part.getCategoryId());
+            if (category == null) {
+                result.addMessage("Category not found.", ResultType.NOT_FOUND);
+                return result;
+            }
         }
 
         if (part.getPartId() != null) {
@@ -81,7 +110,7 @@ public class PartService {
             result.addMessage("Part number is required.");
         }
 
-        if (part.getCar() == null || part.getCar().getCarId() == null || part.getCar().getCarId() <= 0) {
+        if (part.getCarId() <= 0) {
             result.addMessage("Car is required.");
         }
 

@@ -1,0 +1,53 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all parts
+GET http://localhost:8080/api/parts
+Accept: application/json
+
+### Get part by ID
+GET http://localhost:8080/api/parts/1
+Accept: application/json
+
+### Add a new part
+POST http://localhost:8080/api/parts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzgxOTZ9.saywIa0QrlgVK1w-HlUT0u8Lm3XvRzvx6cIF1VopFD0
+
+{
+  "partName": "New Part",
+  "partNumber": "12345",
+  "manufacturer": "Manufacturer",
+  "OEMNumber": "OEM123",
+  "weight": 1.5,
+  "details": "This is a new part",
+  "categoryId": 1,
+  "carId": 1
+}
+
+### Update a part
+PUT http://localhost:8080/api/parts/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzc2Njl9.PpgTTAf2mGshvPl0h-gfTofndDjC2N8ef6l5alcuUyQ
+
+{
+  "partId": 1,
+  "partName": "Updated Part",
+  "partNumber": "12345",
+  "manufacturer": "Manufacturer",
+  "OEMNumber": "OEM123",
+  "weight": 1.5,
+  "details": "This is an updated part",
+  "categoryId": 1,
+  "carId": 1
+}
+
+### Delete a part
+DELETE http://localhost:8080/api/parts/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwNzc2Njl9.PpgTTAf2mGshvPl0h-gfTofndDjC2N8ef6l5alcuUyQ

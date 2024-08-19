@@ -30,7 +30,7 @@ public class PartCategoryService {
             return result;
         }
 
-        if (partCategory.getCategoryId() != 0) {
+        if (partCategory.getCategoryId() != null) {
             result.addMessage("Part Category ID must not be set.");
             return result;
         }
@@ -47,7 +47,7 @@ public class PartCategoryService {
             return result;
         }
 
-        if (partCategory.getCategoryId() <= 0) {
+        if (partCategory.getCategoryId() == null || partCategory.getCategoryId() <= 0) {
             result.addMessage("Part Category ID must be set.");
             return result;
         }
@@ -55,6 +55,8 @@ public class PartCategoryService {
         if (!repository.update(partCategory)) {
             String msg = String.format("Part Category ID: %s, not found.", partCategory.getCategoryId());
             result.addMessage(msg);
+        } else {
+            result.setPayload(partCategory);
         }
 
         return result;
@@ -74,13 +76,10 @@ public class PartCategoryService {
 
         if (partCategory.getCategoryName() == null || partCategory.getCategoryName().isBlank()) {
             result.addMessage("Part Category name is required.");
-        }
-
-        if (repository.existsByName(partCategory.getCategoryName())) {
+        } else if (repository.existsByName(partCategory.getCategoryName())) {
             result.addMessage("Part Category name already exists.");
         }
 
         return result;
     }
-
 }

@@ -1,0 +1,41 @@
+### Successful Login
+POST http://localhost:8080/security/authenticate
+Content-Type: application/json
+
+{
+  "username": "john@smith.com",
+  "password": "P@ssw0rd!"
+}
+
+### Get all comments
+GET http://localhost:8080/comments
+Accept: application/json
+
+### Get comment by ID
+GET http://localhost:8080/comments/1
+Accept: application/json
+
+### Add a new comment
+POST http://localhost:8080/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzQ3NzV9.ZbPM7eaYkae4Gd-EC_hP3AP-RDKSLyLO_jpiKuXn6Bw
+
+{
+  "postId": 1,
+  "commentText": "This is a comment"
+}
+
+### Update a comment
+PUT http://localhost:8080/comments/1
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token>
+
+{
+  "commentId": 1,
+  "postId": 1,
+  "commentText": "This is an updated comment"
+}
+
+### Delete a comment
+DELETE http://localhost:8080/comments/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzQ3NzV9.ZbPM7eaYkae4Gd-EC_hP3AP-RDKSLyLO_jpiKuXn6Bw

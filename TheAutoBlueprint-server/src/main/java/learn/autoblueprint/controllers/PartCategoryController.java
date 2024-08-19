@@ -1,6 +1,5 @@
 package learn.autoblueprint.controllers;
 
-
 import learn.autoblueprint.domain.PartCategoryService;
 import learn.autoblueprint.domain.Result;
 import learn.autoblueprint.models.AppUser;
@@ -28,12 +27,17 @@ public class PartCategoryController {
     }
 
     @GetMapping("/{id}")
-    public PartCategory findById(int id) {
-        return service.findById(id);
+    public ResponseEntity<PartCategory> findById(@PathVariable int id) {
+        PartCategory partCategory = service.findById(id);
+        if (partCategory != null) {
+            return new ResponseEntity<>(partCategory, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestParam PartCategory partCategory, @AuthenticationPrincipal AppUser user) {
+    public ResponseEntity<?> add(@RequestBody PartCategory partCategory, @AuthenticationPrincipal AppUser user) {
         Result<PartCategory> result = service.add(partCategory);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
@@ -43,7 +47,8 @@ public class PartCategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestParam PartCategory partCategory, @AuthenticationPrincipal AppUser user) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody PartCategory partCategory, @AuthenticationPrincipal AppUser user) {
+        partCategory.setCategoryId(id);  // Ensure the ID is set for update
         Result<PartCategory> result = service.update(partCategory);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.OK);

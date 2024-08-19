@@ -1,9 +1,8 @@
 package learn.autoblueprint.data.mappers;
 
 import learn.autoblueprint.models.Part;
-import learn.autoblueprint.models.PartCategory;
-import learn.autoblueprint.models.Car;
 import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -19,15 +18,8 @@ public class PartMapper implements RowMapper<Part> {
         part.setOEMNumber(rs.getString("OEM_number"));
         part.setWeight(rs.getBigDecimal("weight"));
         part.setDetails(rs.getString("details"));
-
-        PartCategory category = new PartCategory();
-        category.setCategoryId(rs.getInt("category_id"));
-        part.setCategory(category);
-
-        Car car = new Car();
-        car.setCarId(rs.getInt("car_id"));
-        part.setCar(car);
-
+        part.setCategoryId(rs.getInt("category_id"));
+        part.setCarId(rs.getInt("car_id"));
         return part;
     }
 }

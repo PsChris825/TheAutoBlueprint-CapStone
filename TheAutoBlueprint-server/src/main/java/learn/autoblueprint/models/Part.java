@@ -12,12 +12,12 @@ public class Part {
     private String OEMNumber;
     private BigDecimal weight;
     private String details;
-    private PartCategory category;
-    private Car car;
+    private int categoryId;
+    private int carId;
 
     public Part() {}
 
-    public Part(Integer partId, String partName, String partNumber, String manufacturer, String OEMNumber, BigDecimal weight, String details, PartCategory category, Car car) {
+    public Part(Integer partId, String partName, String partNumber, String manufacturer, String OEMNumber, BigDecimal weight, String details, int categoryId, int carId) {
         this.partId = partId;
         this.partName = partName;
         this.partNumber = partNumber;
@@ -25,8 +25,8 @@ public class Part {
         this.OEMNumber = OEMNumber;
         this.weight = weight;
         this.details = details;
-        this.category = category;
-        this.car = car;
+        this.categoryId = categoryId;
+        this.carId = carId;
     }
 
     public Integer getPartId() {
@@ -85,20 +85,20 @@ public class Part {
         this.details = details;
     }
 
-    public PartCategory getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(PartCategory category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Car getCar() {
-        return car;
+    public int getCarId() {
+        return carId;
     }
 
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCarId(int carId) {
+        this.carId = carId;
     }
 
     @Override
@@ -106,12 +106,12 @@ public class Part {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Part part = (Part) o;
-        return Objects.equals(partId, part.partId) && Objects.equals(partName, part.partName) && Objects.equals(partNumber, part.partNumber) && Objects.equals(manufacturer, part.manufacturer) && Objects.equals(OEMNumber, part.OEMNumber) && Objects.equals(weight, part.weight) && Objects.equals(details, part.details) && Objects.equals(category, part.category) && Objects.equals(car, part.car);
+        return categoryId == part.categoryId && carId == part.carId && Objects.equals(partId, part.partId) && Objects.equals(partName, part.partName) && Objects.equals(partNumber, part.partNumber) && Objects.equals(manufacturer, part.manufacturer) && Objects.equals(OEMNumber, part.OEMNumber) && Objects.equals(weight, part.weight) && Objects.equals(details, part.details);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(partId, partName, partNumber, manufacturer, OEMNumber, weight, details, category, car);
+        return Objects.hash(partId, partName, partNumber, manufacturer, OEMNumber, weight, details, categoryId, carId);
     }
 
     @Override
@@ -124,8 +124,8 @@ public class Part {
                 ", OEMNumber='" + OEMNumber + '\'' +
                 ", weight=" + weight +
                 ", details='" + details + '\'' +
-                ", category=" + category +
-                ", car=" + car +
+                ", categoryId=" + categoryId +
+                ", carId=" + carId +
                 '}';
     }
 }

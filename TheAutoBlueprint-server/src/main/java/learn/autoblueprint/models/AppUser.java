@@ -17,7 +17,6 @@ public class AppUser implements UserDetails {
     private final boolean enabled;
     private final Collection<GrantedAuthority> authorities;
 
-
     public AppUser(int appUserId, String username, String password, boolean enabled, List<String> roles) {
         this.appUserId = appUserId;
         this.username = username;
@@ -28,48 +27,38 @@ public class AppUser implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-
-
-
     public int getAppUserId() {
         return appUserId;
     }
 
-
     public void setAppUserId(int appUserId) {
         this.appUserId = appUserId;
     }
-
 
     @Override
     public String getUsername() {
         return username;
     }
 
-
     @Override
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public boolean isEnabled() {
         return enabled;
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
 
     @Override
     public boolean isCredentialsNonExpired() {
@@ -80,7 +69,6 @@ public class AppUser implements UserDetails {
     public Collection<GrantedAuthority> getAuthorities() {
         return new ArrayList<>(authorities);
     }
-
 
     @Override
     public boolean equals(Object o) {

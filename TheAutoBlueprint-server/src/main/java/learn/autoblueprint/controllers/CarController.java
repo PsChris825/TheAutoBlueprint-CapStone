@@ -1,6 +1,5 @@
 package learn.autoblueprint.controllers;
 
-
 import learn.autoblueprint.domain.CarService;
 import learn.autoblueprint.domain.Result;
 import learn.autoblueprint.domain.ResultType;
@@ -43,13 +42,13 @@ public class CarController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody Car car, @AuthenticationPrincipal AppUser user) {
-        if (id != car.getCarId()) {
+        if (car.getCarId() == null || id != car.getCarId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         Result<Car> result = service.update(car);
         if (result.isSuccess()) {
-            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else if (result.getResultType() == ResultType.NOT_FOUND) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -68,6 +67,4 @@ public class CarController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

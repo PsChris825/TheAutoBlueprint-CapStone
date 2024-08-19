@@ -127,7 +127,7 @@ public class ModificationPlan {
             }
         }
         this.totalCost = total;
-        this.costVersusBudget = total.subtract(budget);
+        this.costVersusBudget = budget.subtract(total);
     }
 
     public void calculatePlanHours() {
