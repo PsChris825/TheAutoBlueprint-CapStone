@@ -42,9 +42,16 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/api/auto-blueprint/*").hasAuthority("ADMIN")
 
                 .antMatchers(HttpMethod.POST, "/api/car").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/car/*").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/car/*").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/api/car/*").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/car/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/make/{make}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/model/{model}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/year/{year}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/makes").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/models").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car/years/{make}/{model}").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/car/{id}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/car/{id}").hasAuthority("ADMIN")
+
 
                 .antMatchers(HttpMethod.POST, "/api/part-category").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/part-category").permitAll()
@@ -66,6 +73,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/api/plan-part/*").hasAuthority("ADMIN")
 
                 .antMatchers(HttpMethod.GET, "/api/parts").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/parts/category/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/parts/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/parts").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/parts/*").authenticated()

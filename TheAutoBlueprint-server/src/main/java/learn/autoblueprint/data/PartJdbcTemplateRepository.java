@@ -138,4 +138,26 @@ public class PartJdbcTemplateRepository implements PartRepository {
     public boolean deleteById(int partId) {
         return jdbcTemplate.update("delete from part where part_id = ?", partId) > 0;
     }
+
+    @Override
+    public List<Part> findByCategoryId(int categoryId) {
+        final String sql = """
+                select
+                    p.part_id,
+                    p.part_name,
+                    p.part_number,
+                    p.manufacturer,
+                    p.OEM_number,
+                    p.weight,
+                    p.details,
+                    p.category_id,
+                    p.car_id
+                from part p
+                where p.category_id = ?
+                order by p.part_number;
+                """;
+
+        return jdbcTemplate.query(sql, partMapper, categoryId);
+    }
+
 }

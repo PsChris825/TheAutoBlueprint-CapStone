@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getModificationPlans } from '../api/modificationPlanApi';
+import { getModificationPlans } from '../../api/modificationPlanApi';
 
 const ModificationPlanList = () => {
   const [modificationPlans, setModificationPlans] = useState([]);

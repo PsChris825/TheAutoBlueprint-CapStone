@@ -17,4 +17,6 @@ public interface PartRepository {
     boolean update(Part part);
 
     boolean deleteById(int partId);
+
+    List<Part> findByCategoryId(int categoryId);
 }

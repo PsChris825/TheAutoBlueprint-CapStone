@@ -1,5 +1,24 @@
-const url = "http://localhost:8080/security";
+const AUTH_URL = "http://localhost:8080/security";
 
+// Helper function to get the token from localStorage
+const getToken = () => localStorage.getItem('jwt');
+
+// Helper function to parse token and save to localStorage
+const tokenToUser = (token) => {
+  localStorage.setItem("jwt", token);
+  const segments = token.split(".");
+  if (segments.length !== 3) {
+    throw new Error("Invalid token");
+  }
+  const userString = atob(segments[1]);
+  const user = JSON.parse(userString);
+  return {
+    ...user,
+    authorities: user.authorities ? user.authorities.split(",") : []
+  };
+};
+
+// Login function
 export async function login(credentials) {
   const init = {
     method: "POST",
@@ -9,9 +28,9 @@ export async function login(credentials) {
     body: JSON.stringify(credentials),
   };
 
-  const response = await fetch(`${url}/authenticate`, init);
+  const response = await fetch(`${AUTH_URL}/authenticate`, init);
 
-  if (response.status === 200) {
+  if (response.ok) {
     const tokenResponse = await response.json();
     return tokenToUser(tokenResponse.jwt_token);
   } else {
@@ -19,33 +38,23 @@ export async function login(credentials) {
   }
 }
 
+// Refresh token function
 export async function refreshToken() {
   const init = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+      "Authorization": `Bearer ${getToken()}`
     }
   };
 
-  const response = await fetch(`${url}/refresh`, init);
+  const response = await fetch(`${AUTH_URL}/refresh`, init);
 
-  if (response.status === 200) {
+  if (response.ok) {
     const tokenResponse = await response.json();
     const user = tokenToUser(tokenResponse.jwt_token);
-    return { user, token: tokenResponse.jwt_token }; 
+    return { user, token: tokenResponse.jwt_token };
   } else {
     return Promise.reject("Unauthorized");
   }
-}
-
-const tokenToUser = (token) => {
-  localStorage.setItem("jwt", token);
-  const segments = token.split(".");
-  const userString = atob(segments[1]);
-  const user = JSON.parse(userString);
-  return {
-    ...user,
-    authorities: user.authorities.split(",")
-  };
 }

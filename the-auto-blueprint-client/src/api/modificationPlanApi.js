@@ -1,4 +1,3 @@
-// src/api/modificationPlanApi.js
 
 export const getModificationPlans = async () => {
     const response = await fetch('http://localhost:8080/api/modification-plan', {

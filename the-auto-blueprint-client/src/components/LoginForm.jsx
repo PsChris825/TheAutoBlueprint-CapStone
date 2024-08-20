@@ -1,43 +1,35 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../api/authApi";
-import Errors from "./Errors";
-import { AuthContext } from "../providers/AuthProvider";
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api/authApi'; 
+import { AuthContext } from '../providers/AuthProvider';
+import Errors from './Errors';
 
 const LoginForm = () => {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
-
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState([]);
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-  const [errors, setErrors] = useState([]);
 
   const handleChange = (event) => {
-    setCredentials({
-      ...credentials,
-      [event.target.name]: event.target.value,
-    });
+    setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrors([]);
+
     if (!credentials.username || !credentials.password) {
-      setErrors(["Username and password are required"]);
+      setErrors(['Username and password are required']);
       return;
     }
 
-    login(credentials)
-      .then((response) => {
-        const { user, token } = response;
-        localStorage.setItem("jwt", token); 
-        auth.login(user);
-        navigate('/list');
-      })
-      .catch(() => {
-        setErrors(["Invalid username/password"]);
-      });
+    try {
+      const user = await login(credentials);
+      auth.login(user);
+      navigate('/car-list');
+    } catch (error) {
+      setErrors(['Invalid username/password']);
+    }
   };
 
   return (

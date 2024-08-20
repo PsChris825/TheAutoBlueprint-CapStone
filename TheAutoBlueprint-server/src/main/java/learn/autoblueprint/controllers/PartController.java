@@ -34,6 +34,15 @@ public class PartController {
         return service.findByCarId(carId);
     }
 
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Part>> findByCategoryId(@PathVariable int categoryId) {
+        List<Part> parts = service.findByCategoryId(categoryId);
+        if (parts.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(parts);
+    }
+
     @PostMapping
     public ResponseEntity<Result<Part>> add(@RequestBody Part part) {
         Result<Part> result = service.add(part);

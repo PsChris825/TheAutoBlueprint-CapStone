@@ -2,9 +2,12 @@ package learn.autoblueprint.domain;
 
 import learn.autoblueprint.data.CarRepository;
 import learn.autoblueprint.models.Car;
+import learn.autoblueprint.models.Make;
+import learn.autoblueprint.models.Model;
 import org.springframework.stereotype.Service;
 
 import java.time.Year;
+import java.util.List;
 
 @Service
 public class CarService {
@@ -15,8 +18,8 @@ public class CarService {
         this.repository = repository;
     }
 
-    public Car findById(int carId) {
-        return repository.findById(carId);
+    public Car findById(int id) {
+        return repository.findById(id);
     }
 
     public Result<Car> add(Car car) {
@@ -64,6 +67,30 @@ public class CarService {
             result.addMessage(ResultType.NOT_FOUND, "Car id " + carId + " not found.");
         }
         return result;
+    }
+
+    public List<Car> findByMake(String make) {
+        return repository.findByMake(make);
+    }
+
+    public List<Car> findByModel(String model) {
+        return repository.findByModel(model);
+    }
+
+    public List<Car> findByYear(int year) {
+        return repository.findByYear(year);
+    }
+
+    public List<Make> findAllMakes() {
+        return repository.findDistinctMakes();
+    }
+
+    public List<Model> findModelsByMake(String make) {
+        return repository.findDistinctModelsByMake(make);
+    }
+
+    public List<Integer> findYearsByMakeAndModel(String make, String model) {
+        return repository.findDistinctYearsByMakeAndModel(make, model);
     }
 
     private Result<Car> validate(Car car) {
