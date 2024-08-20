@@ -52,6 +52,8 @@ export async function saveModificationPlan(modificationPlan) {
       body: JSON.stringify(modificationPlan),
     });
     if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("Response Error Details:", errorDetails);
       throw new Error("Failed to save modification plan");
     }
     return await response.json();

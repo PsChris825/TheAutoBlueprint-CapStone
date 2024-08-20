@@ -1,6 +1,6 @@
 package learn.autoblueprint.models;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post {
@@ -10,12 +10,12 @@ public class Post {
     private String title;
     private String postDescription;
     private String imageUrl;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Post() {}
 
-    public Post(Integer postId, Integer userId, String title, String postDescription, String imageUrl, Timestamp createdAt, Timestamp updatedAt) {
+    public Post(Integer postId, Integer userId, String title, String postDescription, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -25,6 +25,7 @@ public class Post {
         this.updatedAt = updatedAt;
     }
 
+    // Getters and Setters
     public Integer getPostId() {
         return postId;
     }
@@ -65,19 +66,19 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

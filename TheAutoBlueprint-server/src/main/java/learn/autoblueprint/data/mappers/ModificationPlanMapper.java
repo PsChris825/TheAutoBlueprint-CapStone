@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class ModificationPlanMapper implements RowMapper<ModificationPlan> {
 
@@ -20,8 +21,18 @@ public class ModificationPlanMapper implements RowMapper<ModificationPlan> {
         modificationPlan.setBudget(rs.getBigDecimal("budget"));
         modificationPlan.setTotalCost(rs.getBigDecimal("total_cost"));
         modificationPlan.setCostVersusBudget(rs.getBigDecimal("cost_versus_budget"));
-        modificationPlan.setCreatedAt(rs.getTimestamp("created_at"));
-        modificationPlan.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+        // Handle possible null Timestamp values
+        Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
+        modificationPlan.setCreatedAt(
+                (createdAtTimestamp != null) ? createdAtTimestamp.toLocalDateTime() : null
+        );
+
+        Timestamp updatedAtTimestamp = rs.getTimestamp("updated_at");
+        modificationPlan.setUpdatedAt(
+                (updatedAtTimestamp != null) ? updatedAtTimestamp.toLocalDateTime() : null
+        );
+
         return modificationPlan;
     }
 }

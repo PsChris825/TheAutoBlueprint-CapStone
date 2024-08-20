@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +27,13 @@ public class ModificationPlanJdbcTemplateRepository implements ModificationPlanR
     @Transactional
     public List<ModificationPlan> findAll() {
         final String sql = """
-        SELECT mp.plan_id, mp.app_user_id, mp.car_id, mp.plan_name, mp.plan_description, 
-               mp.plan_hours_of_completion, mp.budget, mp.total_cost, mp.cost_versus_budget, 
-               mp.created_at, mp.updated_at, pp.plan_part_id, pp.part_id, pp.price, pp.time_to_install, 
-               pp.tutorial_url, pp.supplier_url, p.part_name, p.part_number, p.manufacturer, 
-               p.OEM_number, p.weight, p.details, p.category_id, p.car_id 
-        FROM modification_plan mp 
-        LEFT JOIN plan_part pp ON mp.plan_id = pp.plan_id 
+        SELECT mp.plan_id, mp.app_user_id, mp.car_id, mp.plan_name, mp.plan_description,
+               mp.plan_hours_of_completion, mp.budget, mp.total_cost, mp.cost_versus_budget,
+               mp.created_at, mp.updated_at, pp.plan_part_id, pp.part_id, pp.price, pp.time_to_install,
+               pp.tutorial_url, pp.supplier_url, p.part_name, p.part_number, p.manufacturer,
+               p.OEM_number, p.weight, p.details, p.category_id, p.car_id
+        FROM modification_plan mp
+        LEFT JOIN plan_part pp ON mp.plan_id = pp.plan_id
         LEFT JOIN part p ON pp.part_id = p.part_id
     """;
 
@@ -56,8 +55,8 @@ public class ModificationPlanJdbcTemplateRepository implements ModificationPlanR
                     plan.setBudget(rs.getBigDecimal("budget"));
                     plan.setTotalCost(rs.getBigDecimal("total_cost"));
                     plan.setCostVersusBudget(rs.getBigDecimal("cost_versus_budget"));
-                    plan.setCreatedAt(Timestamp.valueOf(rs.getTimestamp("created_at").toLocalDateTime()));
-                    plan.setUpdatedAt(Timestamp.valueOf(rs.getTimestamp("updated_at").toLocalDateTime()));
+                    plan.setCreatedAt(rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null);
+                    plan.setUpdatedAt(rs.getTimestamp("updated_at") != null ? rs.getTimestamp("updated_at").toLocalDateTime() : null);
                     plan.setPlanParts(new ArrayList<>());
                     planMap.put(planId, plan);
                 }

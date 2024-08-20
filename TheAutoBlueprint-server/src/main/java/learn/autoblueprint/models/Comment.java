@@ -1,6 +1,6 @@
 package learn.autoblueprint.models;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Comment {
@@ -9,11 +9,11 @@ public class Comment {
     private Integer postId;
     private Integer userId;
     private String commentText;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     public Comment() {}
 
-    public Comment(Integer commentId, Integer postId, Integer userId, String commentText, Timestamp createdAt) {
+    public Comment(Integer commentId, Integer postId, Integer userId, String commentText, LocalDateTime createdAt) {
         this.commentId = commentId;
         this.postId = postId;
         this.userId = userId;
@@ -53,11 +53,11 @@ public class Comment {
         this.commentText = commentText;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

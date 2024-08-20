@@ -1,48 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { savePost } from '../../api/postApi';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const PostForm = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const { principal } = useContext(AuthContext); 
+  const [post, setPost] = useState({
+    title: '',
+    postDescription: '',
+    imageUrl: '',
+    userId: ''
+  });
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (principal) {
+      // Set the userId from the context when the component mounts
+      setPost((prevPost) => ({
+        ...prevPost,
+        userId: principal.app_user_id,
+      }));
+    }
+  }, [principal]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setPost((prevPost) => ({ ...prevPost, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Add logic to save the post
-    console.log("Post submitted:", { title, description, imageUrl });
+    try {
+      await savePost(post);
+      navigate('/posts'); // Navigate to the posts list or another page on success
+    } catch (error) {
+      if (error.message === 'Failed to save post') {
+        alert('You do not have permission to perform this action.');
+      } else {
+        console.error("Error saving post:", error);
+      }
+    }
   };
 
   return (
-    <div>
-      <h1>Add a New Post</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Image URL:</label>
-          <input
-            type="text"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
-        </div>
-        <button type="submit">Save Post</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-6">
+      <h2 className="text-xl font-semibold mb-4">Create a New Post</h2>
+      <div className="mb-4">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+        <input
+          type="text"
+          name="title"
+          value={post.title}
+          onChange={handleChange}
+          required
+          className="mt-1 p-2 w-full border rounded"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="postDescription" className="block text-sm font-medium text-gray-700">Description</label>
+        <textarea
+          name="postDescription"
+          value={post.postDescription}
+          onChange={handleChange}
+          required
+          className="mt-1 p-2 w-full border rounded"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL</label>
+        <input
+          type="text"
+          name="imageUrl"
+          value={post.imageUrl}
+          onChange={handleChange}
+          className="mt-1 p-2 w-full border rounded"
+        />
+      </div>
+      <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+        Save Post
+      </button>
+    </form>
   );
 };
 

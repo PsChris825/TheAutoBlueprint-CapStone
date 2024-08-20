@@ -2,6 +2,7 @@ package learn.autoblueprint.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +19,8 @@ public class ModificationPlan {
     private BigDecimal budget = BigDecimal.ZERO;
     private BigDecimal totalCost = BigDecimal.ZERO;
     private BigDecimal costVersusBudget = BigDecimal.ZERO;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Integer getPlanId() {
         return planId;
@@ -103,19 +104,19 @@ public class ModificationPlan {
         this.costVersusBudget = costVersusBudget;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

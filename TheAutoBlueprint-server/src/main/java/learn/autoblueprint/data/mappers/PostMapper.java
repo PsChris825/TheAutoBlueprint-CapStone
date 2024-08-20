@@ -4,6 +4,10 @@ import learn.autoblueprint.models.Post;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class PostMapper implements RowMapper<Post> {
 
@@ -15,8 +19,18 @@ public class PostMapper implements RowMapper<Post> {
         post.setTitle(rs.getString("title"));
         post.setPostDescription(rs.getString("post_description"));
         post.setImageUrl(rs.getString("image_url"));
-        post.setCreatedAt(rs.getTimestamp("created_at"));
-        post.setUpdatedAt(rs.getTimestamp("updated_at"));
+
+        Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
+        post.setCreatedAt(
+                (createdAtTimestamp != null) ? createdAtTimestamp.toLocalDateTime() : null
+        );
+
+        Timestamp updatedAtTimestamp = rs.getTimestamp("updated_at");
+        post.setUpdatedAt(
+                (updatedAtTimestamp != null) ? updatedAtTimestamp.toLocalDateTime() : null
+        );
+
+
         return post;
     }
 }
