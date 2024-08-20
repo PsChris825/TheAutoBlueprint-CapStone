@@ -56,6 +56,30 @@ const NavBar = () => {
         >
           Plan Parts
         </NavLink>
+        <NavLink
+          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          to="/modification-list"
+        >
+          View Modifications
+        </NavLink>
+        <NavLink
+          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          to="/modification-form"
+        >
+          Add a Modification
+        </NavLink>
+        <NavLink
+          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          to="/post-form"
+        >
+          Add a Post
+        </NavLink>
+        <NavLink
+          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          to="/post-list"
+        >
+          View Posts
+        </NavLink>
       </nav>
     </aside>
   );

@@ -1,36 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { getModificationPlans } from '../../api/modificationPlanApi';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { fetchCars, deleteCar } from "../../api/carApi";
 
-const ModificationPlanList = () => {
-  const [modificationPlans, setModificationPlans] = useState([]);
-  const [error, setError] = useState(null);
+const CarList = () => {
+  const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    const fetchModificationPlans = async () => {
-      try {
-        const data = await getModificationPlans();
-        setModificationPlans(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchModificationPlans();
+    fetchCars()
+      .then((carList) => setCars(carList))
+      .catch((error) => console.error("Error fetching cars:", error));
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this car?")) {
+      deleteCar(id)
+        .then(() => setCars(cars.filter((car) => car.carId !== id)))
+        .catch((error) => console.error("Error deleting car:", error));
+    }
+  };
 
   return (
-    <div>
-      <h1>Modification Plans</h1>
+    <div className="max-w-3xl mx-auto p-6">
+      <h2 className="text-xl font-semibold mb-4">Car List</h2>
       <ul>
-        {modificationPlans.map(plan => (
-          <li key={plan.planId}>
-            <h2>{plan.name}</h2>
-            <p>{plan.description}</p>
-            {/* Add other fields as necessary */}
+        {cars.map((car) => (
+          <li key={car.carId} className="mb-2 p-4 border rounded flex justify-between items-center">
+            <div>
+              <strong>{car.make} {car.model} ({car.year})</strong>
+              <p>{car.engine} - {car.power} - {car.driveType} - {car.transmissionType}</p>
+            </div>
+            <div>
+              <Link to={`/car-form/${car.carId}`} className="text-blue-500 mr-4">Edit</Link>
+              <button onClick={() => handleDelete(car.carId)} className="text-red-500">Delete</button>
+            </div>
           </li>
         ))}
       </ul>
@@ -38,4 +40,4 @@ const ModificationPlanList = () => {
   );
 };
 
-export default ModificationPlanList;
+export default CarList;

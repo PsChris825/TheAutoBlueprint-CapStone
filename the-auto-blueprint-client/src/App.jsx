@@ -6,11 +6,16 @@ import LoginForm from './components/LoginForm';
 import CarForm from './components/car/CarForm';
 import CarList from './components/car/CarList';
 import Home from './components/Home';
-import PartCategoryList from './components/part/PartCategoryList';
-import PartList from './components/part/PartList';
-import PartForm from './components/part/PartForm';
+import PartCategoryList from './components/part/partCategoryList';
+import PartList from './components/part/partList';
+import PartForm from './components/part/partForm';
 import PlanPartList from './components/part/planPartList';
 import PlanPartForm from './components/part/planPartForm';
+import ModificationForm from './components/modificationPlan/modificationPlanForm';
+import ModificationList from './components/modificationPlan/modificationPlanList';
+import PostForm from './components/forum/postForm';
+import PostList from './components/forum/postList';
+import CommentList from './components/forum/commentList'; 
 
 function App() {
   return (
@@ -33,6 +38,12 @@ function App() {
               <Route path="/plan-part-list" element={<PlanPartList />} />
               <Route path="/plan-part-form/:id" element={<PlanPartForm />} />
               <Route path="/plan-part-form" element={<PlanPartForm />} />
+              <Route path="/modification-list" element={<ModificationList />} />
+              <Route path="/modification-form/:id" element={<ModificationForm />} />
+              <Route path="/modification-form" element={<ModificationForm />} />
+              <Route path="/post-form" element={<PostForm />} />
+              <Route path="/post-list" element={<PostList />} />
+              <Route path="/post/:postId/comments" element={<CommentList />} />
             </Routes>
           </main>
         </div>

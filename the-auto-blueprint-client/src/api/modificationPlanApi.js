@@ -1,32 +1,98 @@
+const API_URL = "http://localhost:8080/api/modification-plan";
 
-export const getModificationPlans = async () => {
-    const response = await fetch('http://localhost:8080/api/modification-plan', {
-      headers: {
-        "Accept": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
-      }
+const getToken = () => localStorage.getItem('jwt');
+
+const getAuthHeaders = () => ({
+  "Authorization": `Bearer ${getToken()}`
+});
+
+// Fetch all modification plans
+export async function fetchModificationPlans() {
+  try {
+    const response = await fetch(API_URL, {
+      headers: getAuthHeaders()
     });
-  
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error("Failed to fetch modification plans.");
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("Response Error Details:", errorDetails);
+      throw new Error("Failed to fetch modification plans");
     }
-  };
-  
-  export const saveModificationPlan = async (modificationPlan) => {
-    const response = await fetch('http://localhost:8080/api/modification-plan', {
-      method: 'POST',
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching modification plans:", error);
+    throw error;
+  }
+}
+
+// Fetch modification plan by ID
+export async function fetchModificationPlanById(id) {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch modification plan with ID ${id}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching modification plan with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+// Save a new modification plan
+export async function saveModificationPlan(modificationPlan) {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        ...getAuthHeaders()
       },
-      body: JSON.stringify(modificationPlan)
+      body: JSON.stringify(modificationPlan),
     });
-  
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error("Failed to save modification plan.");
+    if (!response.ok) {
+      throw new Error("Failed to save modification plan");
     }
-  };
+    return await response.json();
+  } catch (error) {
+    console.error("Error saving modification plan:", error);
+    throw error;
+  }
+}
+
+// Update an existing modification plan by ID
+export async function updateModificationPlan(id, modificationPlan) {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify(modificationPlan),
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to update modification plan with ID ${id}`);
+    }
+  } catch (error) {
+    console.error(`Error updating modification plan with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+// Delete a modification plan by ID
+export async function deleteModificationPlan(id) {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeaders()
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to delete modification plan with ID ${id}`);
+    }
+  } catch (error) {
+    console.error(`Error deleting modification plan with ID ${id}:`, error);
+    throw error;
+  }
+}
