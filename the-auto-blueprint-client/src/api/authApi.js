@@ -58,3 +58,23 @@ export async function refreshToken() {
     return Promise.reject("Unauthorized");
   }
 }
+
+// Sign-Up function
+export async function signUp(userData) {
+  const init = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  };
+
+  const response = await fetch(`${AUTH_URL}/signup`, init);
+
+  if (response.ok) {
+    return await response.json();
+  } else {
+    const error = await response.text();
+    throw new Error(error || "Failed to create account");
+  }
+}

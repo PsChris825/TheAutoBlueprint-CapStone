@@ -1,5 +1,6 @@
 package learn.autoblueprint.controllers;
 
+import learn.autoblueprint.security.AppUserService;
 import learn.autoblueprint.security.JwtConverter;
 import learn.autoblueprint.models.AppUser;
 import learn.autoblueprint.models.Credentials;
@@ -26,11 +27,13 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtConverter jwtConverter;
+    private final AppUserService appUserService;
     private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
 
-    public AuthController(AuthenticationManager authenticationManager, JwtConverter jwtConverter) {
+    public AuthController(AuthenticationManager authenticationManager, JwtConverter jwtConverter, AppUserService appUserService) {
         this.authenticationManager = authenticationManager;
         this.jwtConverter = jwtConverter;
+        this.appUserService = appUserService;
     }
 
     @PostMapping("/authenticate")

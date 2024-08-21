@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchOrStoreCarData, fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel } from "../../api/carApi";
+import { fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel, fetchCarsByFilter } from "../../api/carApi";
 
 const CarList = () => {
   const [cars, setCars] = useState([]);
@@ -63,7 +63,7 @@ const CarList = () => {
     const loadCars = async () => {
       try {
         console.log("Fetching cars with filter:", { selectedMake, selectedModel, selectedYear });
-        const data = await fetchOrStoreCarData(selectedMake, selectedModel, selectedYear);
+        const data = await fetchCarsByFilter(selectedMake, selectedModel, selectedYear);
         console.log("Fetched cars:", data);
         setCars(data);
       } catch (error) {
