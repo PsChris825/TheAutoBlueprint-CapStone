@@ -1,6 +1,6 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { AuthContext } from "../providers/AuthProvider";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../providers/AuthProvider';
 
 const NavBar = () => {
   const { principal, logout } = React.useContext(AuthContext);
@@ -17,25 +17,16 @@ const NavBar = () => {
         </NavLink>
       </div>
       <nav className="text-blue-900 text-base font-semibold pt-3">
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/car-list"
-        >
-          View Cars
-        </NavLink>
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/car-form"
-        >
-          Add a Car
-        </NavLink>
+        {/* Conditional Navigation Links */}
         {principal ? (
-          <button
-            onClick={logout}
-            className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          >
-            Logout
-          </button>
+          <>
+            <NavLink
+              className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+              to="/profile"
+            >
+              Profile
+            </NavLink>
+          </>
         ) : (
           <NavLink
             className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
@@ -44,41 +35,20 @@ const NavBar = () => {
             Login
           </NavLink>
         )}
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/part-category"
-        >
-          Categories
-        </NavLink>
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/plan-part-list"
-        >
-          Plan Parts
-        </NavLink>
+
+        {/* Common Navigation Links */}
         <NavLink
           className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
           to="/modification-list"
         >
-          View Modifications
+          View Current Modification Plans
         </NavLink>
+
         <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/modification-form"
-        >
-          Add a Modification
-        </NavLink>
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-          to="/post-form"
-        >
-          Add a Post
-        </NavLink>
-        <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item mt-6"
           to="/post-list"
         >
-          View Posts
+          Forum
         </NavLink>
       </nav>
     </aside>

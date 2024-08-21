@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { saveCar, updateCar } from "../../api/carApi";
+import { useNavigate } from "react-router-dom";
 
-const CarForm = ({ carId }) => {
+const CarForm = ({ onSave }) => {
   const [car, setCar] = useState({
     make: "",
     model: "",
@@ -12,25 +13,7 @@ const CarForm = ({ carId }) => {
     transmissionType: "",
   });
   const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const fetchCar = async () => {
-      if (carId) {
-        try {
-          const response = await fetch(`http://localhost:8080/api/car/${carId}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch car");
-          }
-          const carData = await response.json();
-          setCar(carData);
-        } catch (error) {
-          console.error("Error fetching car:", error);
-        }
-      }
-    };
-
-    fetchCar();
-  }, [carId]);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,15 +26,9 @@ const CarForm = ({ carId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (carId) {
-        // Update existing car
-        await updateCar(carId, car);
-        setMessage("Car updated successfully!");
-      } else {
-        // Create new car
-        await saveCar(car);
-        setMessage("Car saved successfully!");
-      }
+      const savedCar = await saveCar(car);
+      setMessage("Car saved successfully!");
+      if (onSave) onSave(savedCar); // Call onSave callback if provided
     } catch (error) {
       console.error("Error saving car:", error);
       setMessage("Error saving car. Please try again.");

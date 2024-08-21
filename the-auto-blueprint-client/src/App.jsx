@@ -15,7 +15,7 @@ import ModificationForm from './components/modificationPlan/modificationPlanForm
 import ModificationList from './components/modificationPlan/modificationPlanList';
 import PostForm from './components/forum/postForm';
 import PostList from './components/forum/postList';
-
+import Profile from './components/profile';  // Import Profile component
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
               <Route path="/modification-form" element={<ModificationForm />} />
               <Route path="/post-form" element={<PostForm />} />
               <Route path="/post-list" element={<PostList />} />
-              
+              <Route path="/profile" element={<Profile />} />  {/* Add Profile route */}
             </Routes>
           </main>
         </div>

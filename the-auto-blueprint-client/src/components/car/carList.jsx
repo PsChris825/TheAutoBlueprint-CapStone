@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel, fetchCarsByFilter } from "../../api/carApi";
+import { Link } from "react-router-dom";
+import { fetchCarsByFilter, fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel } from "../../api/carApi";
 
 const CarList = () => {
   const [cars, setCars] = useState([]);
@@ -110,6 +111,11 @@ const CarList = () => {
             ))}
           </select>
         </label>
+      </div>
+      <div className="my-4">
+        <Link to="/car-form" className="bg-blue-500 text-white py-2 px-4 rounded">
+          Add Car
+        </Link>
       </div>
       <ul>
         {cars.map((car) => (
