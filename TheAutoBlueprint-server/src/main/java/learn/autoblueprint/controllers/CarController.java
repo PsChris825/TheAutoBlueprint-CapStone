@@ -64,6 +64,16 @@ public class CarController {
         }
     }
 
+    @GetMapping("/make/{make}/model/{model}/year/{year}")
+    public ResponseEntity<List<Car>> findByMakeModelYear(@PathVariable String make, @PathVariable String model, @PathVariable int year) {
+        List<Car> cars = service.findByMakeModelYear(make, model, year);
+        if (cars.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(cars);
+        }
+    }
+
     @GetMapping("/makes")
     public ResponseEntity<List<Make>> findAllMakes() {
         List<Make> makes = service.findAllMakes();

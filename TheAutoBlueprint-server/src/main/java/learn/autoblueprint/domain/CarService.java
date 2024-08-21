@@ -22,6 +22,10 @@ public class CarService {
         return repository.findById(id);
     }
 
+    public List<Car> findByMakeModelYear(String make, String model, int year) {
+        return repository.findByMakeModelYear(make, model, year);
+    }
+
     public Result<Car> add(Car car) {
         Result<Car> result = validate(car);
 

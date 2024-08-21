@@ -112,4 +112,10 @@ public class CarJdbcTemplateRepository implements CarRepository {
         String sql = "SELECT DISTINCT year FROM car WHERE make = ? AND model = ?";
         return jdbcTemplate.queryForList(sql, new Object[]{make, model}, Integer.class);
     }
+
+    @Override
+    public List<Car> findByMakeModelYear(String make, String model, int year) {
+        final String sql = "SELECT car_id, make, model, year, engine, power, drive_type, transmission_type FROM car WHERE make = ? AND model = ? AND year = ?";
+        return jdbcTemplate.query(sql, carMapper, make, model, year);
+    }
 }

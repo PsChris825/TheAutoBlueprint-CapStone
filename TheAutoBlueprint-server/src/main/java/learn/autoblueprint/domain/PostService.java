@@ -27,6 +27,14 @@ public class PostService {
         return repository.findByUserId(userId);
     }
 
+    public Post findPostWithComments(int postId) {
+        Post post = repository.findById(postId);
+        if (post != null) {
+            post.setComments(repository.findCommentsByPostId(postId));
+        }
+        return post;
+    }
+
     public Result<Post> add(Post post) {
         Result<Post> result = validate(post);
         if (!result.isSuccess()) {

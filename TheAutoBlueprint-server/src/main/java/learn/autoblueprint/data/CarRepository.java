@@ -29,4 +29,6 @@ public interface CarRepository {
     List<Model> findDistinctModelsByMake(String make);
 
     List<Integer> findDistinctYearsByMakeAndModel(String make, String model);
+
+    List<Car> findByMakeModelYear(String make, String model, int year);
 }

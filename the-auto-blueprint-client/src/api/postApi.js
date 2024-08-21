@@ -14,8 +14,6 @@ export async function fetchPosts() {
       headers: getAuthHeaders(),
     });
     if (!response.ok) {
-      const errorDetails = await response.text();
-      console.error("Response Error Details:", errorDetails);
       throw new Error("Failed to fetch posts");
     }
     return await response.json();
@@ -54,14 +52,10 @@ export async function savePost(post) {
     });
 
     if (!response.ok) {
-      const errorDetails = await response.text();
-      console.error("Response Error Details:", errorDetails);
       throw new Error('Failed to save post');
     }
 
-    const data = await response.json();
-    console.log("Post saved successfully:", data);
-    return data;
+    return await response.json();
   } catch (error) {
     console.error("Error saving post:", error);
     throw error;
@@ -131,8 +125,6 @@ export async function saveComment(comment) {
       body: JSON.stringify(comment),
     });
     if (!response.ok) {
-      const errorDetails = await response.text();
-      console.error("Response Error Details:", errorDetails);
       throw new Error("Failed to save comment");
     }
     return await response.json();

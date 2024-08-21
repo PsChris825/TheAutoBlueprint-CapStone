@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/car/makes").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/car/models").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/car/years/{make}/{model}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/car//make/{make}/model/{model}/year/{year}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/car/{id}").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/car/{id}").hasAuthority("ADMIN")
 
@@ -88,10 +89,13 @@ public class SecurityConfig {
 
                 .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/{postId}/comments*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/user/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/posts").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/posts/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/posts/*").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/api/external-car/**").permitAll()
 
                 .anyRequest().denyAll()
                 .and()

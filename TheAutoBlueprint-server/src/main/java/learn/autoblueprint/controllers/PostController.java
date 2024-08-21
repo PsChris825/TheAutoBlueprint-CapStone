@@ -27,6 +27,11 @@ public class PostController {
         return service.findById(postId);
     }
 
+    @GetMapping("/{postId}/comments")
+    public Post findPostWithComments(@PathVariable int postId) {
+        return service.findPostWithComments(postId);
+    }
+
     @GetMapping("/user/{userId}")
     public List<Post> findByUserId(@PathVariable int userId) {
         return service.findByUserId(userId);

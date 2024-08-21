@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel, fetchCarsByYear } from "../../api/carApi";
+import { fetchOrStoreCarData, fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel } from "../../api/carApi";
 
 const CarList = () => {
   const [cars, setCars] = useState([]);
@@ -62,23 +62,21 @@ const CarList = () => {
   useEffect(() => {
     const loadCars = async () => {
       try {
-        let data;
-        if (selectedYear) {
-          data = await fetchCarsByYear(selectedYear);
-        } else if (selectedModel) {
-          data = await fetchCarsByModel(selectedModel);
-        } else if (selectedMake) {
-          data = await fetchCarsByMake(selectedMake);
-        } else {
-          data = [];
-        }
+        console.log("Fetching cars with filter:", { selectedMake, selectedModel, selectedYear });
+        const data = await fetchOrStoreCarData(selectedMake, selectedModel, selectedYear);
+        console.log("Fetched cars:", data);
         setCars(data);
       } catch (error) {
         console.error("Error fetching cars:", error);
       }
     };
 
-    loadCars();
+    // Only load cars if at least make, model, and year are selected
+    if (selectedMake && selectedModel && selectedYear) {
+      loadCars();
+    } else {
+      setCars([]);
+    }
   }, [selectedMake, selectedModel, selectedYear]);
 
   return (

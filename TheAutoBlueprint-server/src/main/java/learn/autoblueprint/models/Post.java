@@ -1,6 +1,7 @@
 package learn.autoblueprint.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Post {
@@ -12,10 +13,11 @@ public class Post {
     private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<Comment> comments;
 
     public Post() {}
 
-    public Post(Integer postId, Integer userId, String title, String postDescription, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Post(Integer postId, Integer userId, String title, String postDescription, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> comments) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -23,6 +25,7 @@ public class Post {
         this.imageUrl = imageUrl;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.comments = comments;
     }
 
     // Getters and Setters
@@ -82,16 +85,24 @@ public class Post {
         this.updatedAt = updatedAt;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(postId, post.postId) && Objects.equals(userId, post.userId) && Objects.equals(title, post.title) && Objects.equals(postDescription, post.postDescription) && Objects.equals(imageUrl, post.imageUrl) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt);
+        return Objects.equals(postId, post.postId) && Objects.equals(userId, post.userId) && Objects.equals(title, post.title) && Objects.equals(postDescription, post.postDescription) && Objects.equals(imageUrl, post.imageUrl) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt) && Objects.equals(comments, post.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(postId, userId, title, postDescription, imageUrl, createdAt, updatedAt);
+        return Objects.hash(postId, userId, title, postDescription, imageUrl, createdAt, updatedAt, comments);
     }
 }
