@@ -1,17 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchModificationPlans, deleteModificationPlan } from "../../api/modificationPlanApi";
+import { fetchCarById } from "../../api/carApi";
 
 const ModificationPlanList = () => {
   const [modificationPlans, setModificationPlans] = useState([]);
+  const [carDetails, setCarDetails] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchModificationPlans()
-      .then((planList) => {
-        console.log("Fetched Modification Plans:", planList); // Log the fetched data
-        setModificationPlans(planList);
-      })
-      .catch((error) => console.error("Error fetching modification plans:", error));
+    const loadModificationPlans = async () => {
+      try {
+        const plans = await fetchModificationPlans();
+        setModificationPlans(plans);
+
+        const fetchCarDetails = async () => {
+          const details = {};
+          for (const plan of plans) {
+            if (plan.carId) {
+              try {
+                const car = await fetchCarById(plan.carId);
+                details[plan.planId] = car;
+              } catch (error) {
+                console.error(`Error fetching car details for plan ${plan.planId}:`, error);
+              }
+            }
+          }
+          setCarDetails(details);
+        };
+
+        fetchCarDetails();
+      } catch (error) {
+        console.error("Error fetching modification plans:", error);
+      }
+    };
+
+    loadModificationPlans();
   }, []);
 
   const handleDelete = (id) => {
@@ -32,12 +56,21 @@ const ModificationPlanList = () => {
               <strong>{plan.planName}</strong>
               <p>{plan.planDescription}</p>
               <p>
-                Budget: ${plan.budget} - Total Cost: ${plan.totalCost} - Hours of Completion: {plan.planHoursOfCompletion}
+                Car: {carDetails[plan.planId]?.make} {carDetails[plan.planId]?.model} {carDetails[plan.planId]?.year}
+              </p>
+              <p>
+                Budget: ${plan.budget} - Total Cost: ${plan.totalCost} - Hours of Completion: {plan.planHoursOfCompletion} - Cost vs Budget: {plan.costVersusBudget}$
               </p>
             </div>
             <div>
               <Link to={`/modification-form/${plan.planId}`} className="text-blue-500 mr-4">Edit</Link>
-              <button onClick={() => handleDelete(plan.planId)} className="text-red-500">Delete</button>
+              <button onClick={() => handleDelete(plan.planId)} className="text-red-500 mr-4">Delete</button>
+              <button 
+                onClick={() => navigate(`/modification-plan/${plan.planId}/details`)} 
+                className="text-green-500"
+              >
+                View
+              </button>
             </div>
           </li>
         ))}

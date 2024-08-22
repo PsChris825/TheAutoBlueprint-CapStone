@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { fetchCarsByFilter, fetchMakes, fetchModelsByMake, fetchYearsByMakeAndModel } from "../../api/carApi";
 
-const CarList = () => {
+const CarList = ({ onCarSelect }) => {
   const [cars, setCars] = useState([]);
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([]);
@@ -112,14 +111,9 @@ const CarList = () => {
           </select>
         </label>
       </div>
-      <div className="my-4">
-        <Link to="/car-form" className="bg-blue-500 text-white py-2 px-4 rounded">
-          Add Car
-        </Link>
-      </div>
       <ul>
         {cars.map((car) => (
-          <li key={car.carId}>
+          <li key={car.carId} onClick={() => onCarSelect(car.carId)}>
             {car.make} {car.model} ({car.year}) - {car.engine}, {car.power} HP, {car.driveType}, {car.transmissionType}
           </li>
         ))}

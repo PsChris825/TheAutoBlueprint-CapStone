@@ -3,28 +3,28 @@ package learn.autoblueprint.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import learn.autoblueprint.models.AppUser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import learn.autoblueprint.security.AppUserService;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class JwtConverter {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private Key key;
     private final String ISSUER = "auto-blueprint";
     private final int EXPIRATION_MINUTES = 15;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
-    private final AppUserService appUserService;
 
-    public JwtConverter(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    public JwtConverter(@Value("${jwt.signing.secret}") String secret) {
+        this.key = new SecretKeySpec(Base64.getDecoder().decode(secret), SignatureAlgorithm.HS256.getJcaName());
     }
+
 
     public String getTokenFromUser(AppUser user) {
         System.out.println("Generating token for user: " + user.getUsername());

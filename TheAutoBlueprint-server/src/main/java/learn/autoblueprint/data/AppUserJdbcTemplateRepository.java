@@ -46,6 +46,7 @@ public class AppUserJdbcTemplateRepository implements AppUserRepository {
     public AppUser create(AppUser user) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("app_user")
+                .usingColumns("username", "password_hash", "enabled")
                 .usingGeneratedKeyColumns("app_user_id");
 
         Map<String, Object> args = Map.of(
@@ -54,12 +55,12 @@ public class AppUserJdbcTemplateRepository implements AppUserRepository {
                 "enabled", user.isEnabled()
         );
 
-        Number key = insert.executeAndReturnKey(args);
-        if (key == null) {
+        user.setAppUserId(insert.executeAndReturnKey(args).intValue());
+
+        if (user.getAppUserId() <= 0) {
             return null;
         }
 
-        user.setAppUserId(key.intValue());
         updateRoles(user);
 
         return user;

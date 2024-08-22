@@ -74,9 +74,17 @@ export async function updateModificationPlan(id, modificationPlan) {
       },
       body: JSON.stringify(modificationPlan),
     });
+
     if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("Response Error Details:", errorDetails);
       throw new Error(`Failed to update modification plan with ID ${id}`);
     }
+
+    // Handle empty response body
+    const responseBody = await response.text();
+    return responseBody ? JSON.parse(responseBody) : {}; // Parse response if not empty
+
   } catch (error) {
     console.error(`Error updating modification plan with ID ${id}:`, error);
     throw error;

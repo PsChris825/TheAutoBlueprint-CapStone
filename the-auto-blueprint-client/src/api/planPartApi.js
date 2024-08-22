@@ -81,3 +81,16 @@ export async function deletePlanPart(id) {
     throw error;
   }
 }
+
+export async function fetchPlanPartsByPlanId(planId) {
+  try {
+    const response = await fetch(`${API_URL}/plan/${planId}`, { headers: getAuthHeaders() });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch plan parts for planId ${planId}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching plan parts for planId ${planId}:`, error);
+    throw error;
+  }
+}

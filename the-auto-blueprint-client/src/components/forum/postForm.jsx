@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { savePost } from '../../api/postApi';
 import { AuthContext } from '../../providers/AuthProvider';
 
-const PostForm = () => {
+const PostForm = ({ onClose }) => {
   const { principal } = useContext(AuthContext); 
   const [post, setPost] = useState({
     title: '',
@@ -33,7 +33,8 @@ const PostForm = () => {
     event.preventDefault();
     try {
       await savePost(post);
-      navigate('/posts'); // Navigate to the posts list or another page on success
+      navigate('/post-list'); // Navigate to the posts list or another page on success
+      onClose(); // Close the modal
     } catch (error) {
       if (error.message === 'Failed to save post') {
         alert('You do not have permission to perform this action.');
@@ -79,6 +80,9 @@ const PostForm = () => {
       </div>
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
         Save Post
+      </button>
+      <button type="button" onClick={onClose} className="ml-4 bg-gray-500 text-white py-2 px-4 rounded">
+        Cancel
       </button>
     </form>
   );

@@ -68,6 +68,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/api/modification-plan/*").hasAuthority("ADMIN")
 
                 .antMatchers(HttpMethod.GET, "/api/plan-part").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/plan-part/plan/{planId}*").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/plan-part/*").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/plan-part").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/plan-part/*").authenticated()
@@ -96,6 +97,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/api/posts/*").hasAuthority("ADMIN")
 
                 .antMatchers(HttpMethod.GET, "/api/external-car/**").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/security/refresh").authenticated()
 
                 .anyRequest().denyAll()
                 .and()

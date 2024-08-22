@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { fetchPartById, savePart, updatePart } from '../../api/partApi';
 
-const PartForm = () => {
-  const { id, categoryId } = useParams();
-  const navigate = useNavigate();
+const PartForm = ({ onClose, carId, categories }) => {
+  const { id } = useParams();
   const [part, setPart] = useState({
     partName: '',
     partNumber: '',
@@ -12,8 +11,8 @@ const PartForm = () => {
     OEMNumber: '',
     weight: '',
     details: '',
-    categoryId,
-    carId: ''
+    categoryId: '',
+    carId: carId || ''
   });
 
   useEffect(() => {
@@ -21,15 +20,21 @@ const PartForm = () => {
       const loadPart = async () => {
         try {
           const data = await fetchPartById(id);
-          setPart(data);
+          setPart(prevPart => ({
+            ...prevPart,
+            ...data,
+            carId: carId || data.carId
+          }));
         } catch (error) {
           console.error(`Failed to fetch part with id ${id}:`, error);
         }
       };
 
       loadPart();
+    } else {
+      setPart(prevPart => ({ ...prevPart, carId }));
     }
-  }, [id]);
+  }, [id, carId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +49,7 @@ const PartForm = () => {
       } else {
         await savePart(part);
       }
-      navigate(`/part-category/${categoryId}/parts`);
+      onClose(); // Close the modal after saving
     } catch (error) {
       console.error('Failed to save part:', error);
     }
@@ -93,7 +98,8 @@ const PartForm = () => {
         <label>
           Weight:
           <input
-            type="text"
+            type="number"
+            step="0.01"
             name="weight"
             value={part.weight}
             onChange={handleChange}
@@ -108,24 +114,27 @@ const PartForm = () => {
           />
         </label>
         <label>
-          Category ID:
-          <input
-            type="text"
+          Category:
+          <select
             name="categoryId"
             value={part.categoryId}
-            readOnly // Prevent users from changing the category
-          />
-        </label>
-        <label>
-          Car ID:
-          <input
-            type="text"
-            name="carId"
-            value={part.carId}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select a category</option>
+            {categories.map(category => (
+              <option key={category.categoryId} value={category.categoryId}>
+                {category.categoryName}
+              </option>
+            ))}
+          </select>
         </label>
+        <input
+          type="hidden"
+          name="carId"
+          value={part.carId}
+        />
         <button type="submit">Save</button>
+        <button type="button" onClick={onClose}>Cancel</button>
       </form>
     </div>
   );

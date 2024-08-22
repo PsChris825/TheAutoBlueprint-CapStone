@@ -32,6 +32,11 @@ public class PlanPartController {
         return ResponseEntity.ok(planPart);
     }
 
+    @GetMapping("/plan/{planId}")
+    public List<PlanPart> findByPlanId(@PathVariable int planId) {
+        return service.findByPlanId(planId);
+    }
+
     @PostMapping
     public ResponseEntity<Result<PlanPart>> add(@RequestBody PlanPart planPart) {
         Result<PlanPart> result = service.add(planPart);

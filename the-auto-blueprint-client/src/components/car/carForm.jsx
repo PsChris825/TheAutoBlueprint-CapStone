@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { saveCar, updateCar } from "../../api/carApi";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { saveCar } from "../../api/carApi";
 
 const CarForm = ({ onSave }) => {
   const [car, setCar] = useState({
@@ -10,99 +9,102 @@ const CarForm = ({ onSave }) => {
     engine: "",
     power: "",
     driveType: "",
-    transmissionType: "",
+    transmissionType: ""
   });
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCar((prevCar) => ({
-      ...prevCar,
-      [name]: value,
-    }));
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCar((prevCar) => ({ ...prevCar, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent page refresh
+
     try {
       const savedCar = await saveCar(car);
-      setMessage("Car saved successfully!");
-      if (onSave) onSave(savedCar); // Call onSave callback if provided
+      onSave(savedCar); // Pass the saved car ID to the parent component
     } catch (error) {
       console.error("Error saving car:", error);
-      setMessage("Error saving car. Please try again.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "0 auto" }}>
-      {/* Car details fields */}
+    <form onSubmit={handleSubmit} className="car-form">
+      <h3>Add a New Car</h3>
       <div>
-        <label>Make</label>
+        <label htmlFor="make">Make:</label>
         <input
           type="text"
+          id="make"
           name="make"
           value={car.make}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
-        <label>Model</label>
+        <label htmlFor="model">Model:</label>
         <input
           type="text"
+          id="model"
           name="model"
           value={car.model}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
-        <label>Year</label>
+        <label htmlFor="year">Year:</label>
         <input
           type="text"
+          id="year"
           name="year"
           value={car.year}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
-        <label>Engine</label>
+        <label htmlFor="engine">Engine:</label>
         <input
           type="text"
+          id="engine"
           name="engine"
           value={car.engine}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label>Power</label>
+        <label htmlFor="power">Power:</label>
         <input
           type="text"
+          id="power"
           name="power"
           value={car.power}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label>Drive Type</label>
+        <label htmlFor="driveType">Drive Type:</label>
         <input
           type="text"
+          id="driveType"
           name="driveType"
           value={car.driveType}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label>Transmission Type</label>
+        <label htmlFor="transmissionType">Transmission Type:</label>
         <input
           type="text"
+          id="transmissionType"
           name="transmissionType"
           value={car.transmissionType}
           onChange={handleChange}
         />
       </div>
-      <button type="submit">{carId ? "Update" : "Save"}</button>
-      {message && <p>{message}</p>}
+      <button type="submit">Add Car</button>
     </form>
   );
 };
