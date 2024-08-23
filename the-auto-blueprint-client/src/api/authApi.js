@@ -69,12 +69,16 @@ export async function signUp(userData) {
     body: JSON.stringify(userData),
   };
 
-  const response = await fetch(`${AUTH_URL}/signup`, init);
+  const response = await fetch(`${AUTH_URL}/register`, init);
 
   if (response.ok) {
-    return await response.json();
+    const tokenResponse = await response.json();
+    return tokenToUser(tokenResponse.jwt_token); // Automatically log in by saving the token
   } else {
     const error = await response.text();
     throw new Error(error || "Failed to create account");
   }
 }
+
+
+

@@ -60,6 +60,10 @@ public class PostService {
         return repository.deleteById(postId);
     }
 
+    public String getUsernameById(int userId) {
+        return repository.getUsernameById(userId);
+    }
+
     private Result<Post> validate(Post post) {
         Result<Post> result = new Result<>();
         if (post == null) {

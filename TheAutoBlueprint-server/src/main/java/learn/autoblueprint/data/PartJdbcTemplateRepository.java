@@ -83,6 +83,27 @@ public class PartJdbcTemplateRepository implements PartRepository {
     }
 
     @Override
+    public List<Part> findByCategoryIdAndCarId(int categoryId, int carId) {
+        final String sql = """
+                select
+                    p.part_id,
+                    p.part_name,
+                    p.part_number,
+                    p.manufacturer,
+                    p.OEM_number,
+                    p.weight,
+                    p.details,
+                    p.category_id,
+                    p.car_id
+                from part p
+                where p.category_id = ? and p.car_id = ?
+                order by p.part_number;
+                """;
+
+        return jdbcTemplate.query(sql, partMapper, categoryId, carId);
+    }
+
+    @Override
     public Part add(Part part) {
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("part")
@@ -159,5 +180,7 @@ public class PartJdbcTemplateRepository implements PartRepository {
 
         return jdbcTemplate.query(sql, partMapper, categoryId);
     }
+
+
 
 }

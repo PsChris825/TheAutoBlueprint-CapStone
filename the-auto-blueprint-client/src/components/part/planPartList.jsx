@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { fetchPlanPartsByPlanId, deletePlanPart } from '../../api/planPartApi';
 
 const PlanPartList = () => {
-  const { planId, carId } = useParams(); // Ensure carId is fetched from the params
+  const { planId, carId } = useParams();
   const [planParts, setPlanParts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -41,38 +41,40 @@ const PlanPartList = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Plan Parts List</h1>
-      {loading && <p>Loading...</p>}
+    <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-4 text-[#5894CD]">Plan Parts List</h1>
+      {loading && <p className="text-gray-700">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <ul className="list-disc pl-5">
+      <ul className="list-disc pl-5 space-y-4">
         {planParts.length > 0 ? (
           planParts.map((part) => (
-            <li key={part.planPartId} className="mb-2">
-              <span>
-                {part.partId} - ${part.price} - {part.timeToInstall} mins
-              </span>
-              <button
-                className="ml-4 text-red-500"
-                onClick={() => handleDelete(part.planPartId)}
-              >
-                Delete
-              </button>
-              <Link
-                to={`/plan-part-form/${planId}/${carId}/${part.planPartId}`} // Use carId here
-                className="ml-4 text-blue-500"
-              >
-                Edit
-              </Link>
+            <li key={part.planPartId} className="p-4 bg-gray-50 border rounded-lg shadow-sm flex justify-between items-center">
+              <div className="text-gray-800">
+                <span className="font-semibold">{part.partId} - ${part.price} - {part.timeToInstall} mins</span>
+              </div>
+              <div className="flex space-x-4">
+                <button
+                  className="text-red-500 hover:text-red-700 transition duration-200"
+                  onClick={() => handleDelete(part.planPartId)}
+                >
+                  Delete
+                </button>
+                <Link
+                  to={`/plan-part-form/${planId}/${carId}/${part.planPartId}`}
+                  className="text-blue-500 hover:text-blue-700 transition duration-200"
+                >
+                  Edit
+                </Link>
+              </div>
             </li>
           ))
         ) : (
-          <p>No plan parts found.</p>
+          <p className="text-gray-600">No plan parts found.</p>
         )}
       </ul>
       <Link
-        to={`/plan-part-form/${planId}/${carId}`} // Route to add new plan part, including carId
-        className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded"
+        to={`/plan-part-form/${planId}/${carId}`}
+        className="mt-6 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
       >
         Add New Plan Part
       </Link>

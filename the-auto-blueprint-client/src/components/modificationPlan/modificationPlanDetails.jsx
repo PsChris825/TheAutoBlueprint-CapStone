@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchModificationPlanById } from '../../api/modificationPlanApi';
 import { fetchPlanPartsByPlanId, deletePlanPart } from '../../api/planPartApi';
-import { fetchCarById } from '../../api/carApi'; // Import the function to fetch car details
+import { fetchCarById } from '../../api/carApi';
+import { fetchPartById } from '../../api/partApi'; 
 
 const ModificationPlanDetails = () => {
     const { planId } = useParams();
     const navigate = useNavigate();
     const [modificationPlan, setModificationPlan] = useState(null);
     const [planParts, setPlanParts] = useState([]);
-    const [car, setCar] = useState(null); // State for car details
+    const [car, setCar] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -27,7 +28,12 @@ const ModificationPlanDetails = () => {
                 }
 
                 const parts = await fetchPlanPartsByPlanId(planId);
-                setPlanParts(parts);
+                
+                const partsWithNames = await Promise.all(parts.map(async (part) => {
+                    const partDetails = await fetchPartById(part.partId);
+                    return { ...part, partName: partDetails.partName }; 
+                }));
+                setPlanParts(partsWithNames);
             } catch (error) {
                 console.error("Error fetching modification plan details:", error);
                 setError('Failed to load modification plan details.');
@@ -61,50 +67,50 @@ const ModificationPlanDetails = () => {
     const remainingBudget = (modificationPlan.budget || 0) - totalCost;
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold mb-4">{modificationPlan.planName}</h1>
-            <p>{modificationPlan.planDescription}</p>
-            <div className="mb-4">
+        <div className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
+            <h1 className="text-2xl font-bold mb-4 text-[#5894CD]">{modificationPlan.planName}</h1>
+            <p className="mb-4 text-gray-700">{modificationPlan.planDescription}</p>
+            <div className="mb-6">
                 <p><strong>Budget:</strong> ${modificationPlan.budget.toFixed(2)}</p>
                 <p><strong>Total Cost of Parts:</strong> ${totalCost.toFixed(2)}</p>
                 <p><strong>Remaining Budget:</strong> ${remainingBudget.toFixed(2)}</p>
             </div>
             {car && (
-                <div className="mb-4">
-                    <h2 className="text-lg font-semibold mt-4">Car Details</h2>
+                <div className="mb-6 p-4 bg-gray-100 rounded-lg shadow-inner">
+                    <h2 className="text-lg font-semibold text-[#5894CD]">Car Details</h2>
                     <p><strong>Make:</strong> {car.make}</p>
                     <p><strong>Model:</strong> {car.model}</p>
                     <p><strong>Year:</strong> {car.year}</p>
                 </div>
             )}
-            <h2 className="text-lg font-semibold mt-4">Plan Parts</h2>
+            <h2 className="text-lg font-semibold text-[#5894CD]">Plan Parts</h2>
             {planParts.length > 0 ? (
-                <ul className="list-disc pl-5">
+                <ul className="list-disc pl-5 space-y-4">
                     {planParts.map(part => (
-                        <li key={part.planPartId} className="mb-2">
+                        <li key={part.planPartId} className="mb-2 p-4 bg-gray-50 border rounded-lg shadow-sm">
                             <div>
-                                <span>
-                                    {part.partName} - ${part.price.toFixed(2)} - {part.timeToInstall} hrs
+                                <span className="font-semibold text-gray-800">
+                                    {part.partName} - ${part.price?.toFixed(2)} - {part.timeToInstall} hrs
                                 </span>
                                 <button
-                                    className="ml-4 text-red-500"
+                                    className="ml-4 text-red-500 hover:text-red-700 transition duration-200"
                                     onClick={() => handleDeletePlanPart(part.planPartId)}
                                 >
                                     Mark as Completed
                                 </button>
                                 <Link
                                     to={`/plan-part-form/${planId}/${modificationPlan.carId}/${part.planPartId}`}
-                                    className="ml-4 text-blue-500"
+                                    className="ml-4 text-blue-500 hover:text-blue-700 transition duration-200"
                                 >
                                     Edit
                                 </Link>
                             </div>
-                            <div>
+                            <div className="mt-2">
                                 {part.supplierUrl && (
-                                    <p><a href={part.supplierUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500">Supplier</a></p>
+                                    <p><a href={part.supplierUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700 transition duration-200">Supplier</a></p>
                                 )}
                                 {part.tutorialUrl && (
-                                    <p><a href={part.tutorialUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500">Tutorial</a></p>
+                                    <p><a href={part.tutorialUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700 transition duration-200">Tutorial</a></p>
                                 )}
                             </div>
                         </li>
@@ -115,7 +121,7 @@ const ModificationPlanDetails = () => {
             )}
             <Link
                 to={`/plan-part-form/${planId}/${modificationPlan.carId}`}
-                className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded"
+                className="mt-6 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
             >
                 Add New Plan Part
             </Link>

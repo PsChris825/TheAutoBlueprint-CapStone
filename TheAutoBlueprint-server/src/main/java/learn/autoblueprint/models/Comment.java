@@ -8,15 +8,17 @@ public class Comment {
     private Integer commentId;
     private Integer postId;
     private Integer userId;
+    private String username; // New field to store the username
     private String commentText;
     private LocalDateTime createdAt;
 
     public Comment() {}
 
-    public Comment(Integer commentId, Integer postId, Integer userId, String commentText, LocalDateTime createdAt) {
+    public Comment(Integer commentId, Integer postId, Integer userId, String username, String commentText, LocalDateTime createdAt) {
         this.commentId = commentId;
         this.postId = postId;
         this.userId = userId;
+        this.username = username; // Initialize the username field
         this.commentText = commentText;
         this.createdAt = createdAt;
     }
@@ -45,6 +47,14 @@ public class Comment {
         this.userId = userId;
     }
 
+    public String getUsername() { // New getter for username
+        return username;
+    }
+
+    public void setUsername(String username) { // New setter for username
+        this.username = username;
+    }
+
     public String getCommentText() {
         return commentText;
     }
@@ -66,11 +76,16 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return Objects.equals(commentId, comment.commentId) && Objects.equals(postId, comment.postId) && Objects.equals(userId, comment.userId) && Objects.equals(commentText, comment.commentText) && Objects.equals(createdAt, comment.createdAt);
+        return Objects.equals(commentId, comment.commentId) &&
+                Objects.equals(postId, comment.postId) &&
+                Objects.equals(userId, comment.userId) &&
+                Objects.equals(username, comment.username) && // Updated equals method
+                Objects.equals(commentText, comment.commentText) &&
+                Objects.equals(createdAt, comment.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commentId, postId, userId, commentText, createdAt);
+        return Objects.hash(commentId, postId, userId, username, commentText, createdAt); // Updated hashCode method
     }
 }

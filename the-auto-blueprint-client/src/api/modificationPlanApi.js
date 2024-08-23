@@ -81,10 +81,9 @@ export async function updateModificationPlan(id, modificationPlan) {
       throw new Error(`Failed to update modification plan with ID ${id}`);
     }
 
-    // Handle empty response body
+    
     const responseBody = await response.text();
-    return responseBody ? JSON.parse(responseBody) : {}; // Parse response if not empty
-
+    return responseBody ? JSON.parse(responseBody) : {}; 
   } catch (error) {
     console.error(`Error updating modification plan with ID ${id}:`, error);
     throw error;
@@ -103,6 +102,24 @@ export async function deleteModificationPlan(id) {
     }
   } catch (error) {
     console.error(`Error deleting modification plan with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+// Fetch modification plans by appUserId
+export async function fetchUserModificationPlans(appUserId) {
+  try {
+    const response = await fetch(`${API_URL}/appUser/${appUserId}`, {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("Response Error Details:", errorDetails);
+      throw new Error("Failed to fetch user-specific modification plans");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching user-specific modification plans:", error);
     throw error;
   }
 }

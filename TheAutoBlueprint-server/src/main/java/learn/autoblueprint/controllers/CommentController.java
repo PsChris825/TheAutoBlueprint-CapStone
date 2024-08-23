@@ -39,8 +39,10 @@ public class CommentController {
 
     @PostMapping
     public Result<Comment> add(@RequestBody Comment comment) {
+        System.out.println("Received comment in backend: " + comment);
         return service.add(comment);
     }
+
 
     @PutMapping("/{commentId}")
     public Result<Comment> update(@PathVariable int commentId, @RequestBody Comment comment) {
@@ -51,5 +53,10 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public boolean deleteById(@PathVariable int commentId) {
         return service.deleteById(commentId);
+    }
+
+    @GetMapping("/username/{userId}")
+    public String getUsernameById(@PathVariable int userId) {
+        return service.getUsernameById(userId);
     }
 }

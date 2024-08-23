@@ -59,3 +59,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1Y
 ### Delete a modification plan
 DELETE http://localhost:8080/api/modification-plan/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQwMzQ3NzV9.ZbPM7eaYkae4Gd-EC_hP3AP-RDKSLyLO_jpiKuXn6Bw
+
+###
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhdXRvLWJsdWVwcmludCIsInN1YiI6ImpvaG5Ac21pdGguY29tIiwiYXBwX3VzZXJfaWQiOjEsImF1dGhvcml0aWVzIjoiQURNSU4iLCJleHAiOjE3MjQzODQ5MDh9.n6BDdyXzKSmRppx4XZJemkf1_KyeOQwis4NMfabY_NA
+
+{
+  "commentText": "this ",
+  "postId": 6,
+  "userId": 1,
+  "username": "testuser",
+  "createdAt": "2024-01-01T12:00:00"
+}
+header name: header value
+
+content

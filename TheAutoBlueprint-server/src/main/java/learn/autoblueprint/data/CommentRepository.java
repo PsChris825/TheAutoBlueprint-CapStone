@@ -5,6 +5,8 @@ import learn.autoblueprint.models.Comment;
 import java.util.List;
 
 public interface CommentRepository {
+    String getUsernameById(int userId);
+
     List<Comment> findAll();
 
     List<Comment> findByPostId(int postId);

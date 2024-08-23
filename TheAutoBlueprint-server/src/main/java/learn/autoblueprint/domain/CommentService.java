@@ -38,8 +38,13 @@ public class CommentService {
             return result;
         }
 
+        if (comment.getUserId() == null) {
+            result.addMessage("User ID cannot be null.", ResultType.INVALID);
+            return result;
+        }
+
         if (comment.getCommentId() != null && comment.getCommentId() != 0) {
-            result.addMessage("New comment must not have id set.");
+            result.addMessage("New comment must not have id set.", ResultType.INVALID);
             return result;
         }
 
@@ -58,13 +63,13 @@ public class CommentService {
         }
 
         if (comment.getCommentId() <= 0) {
-            result.addMessage("Existing comment must have id set.");
+            result.addMessage("Existing comment must have id set.", ResultType.INVALID);
             return result;
         }
 
         if (!repository.update(comment)) {
             String msg = String.format("commentId: %s, not found", comment.getCommentId());
-            result.addMessage(msg);
+            result.addMessage(msg, ResultType.NOT_FOUND);
         }
 
         return result;
@@ -74,23 +79,26 @@ public class CommentService {
         return repository.deleteById(commentId);
     }
 
+    public String getUsernameById(int userId) {
+        return repository.getUsernameById(userId);
+    }
+
     private Result<Comment> validate(Comment comment) {
         Result<Comment> result = new Result<>();
 
         if (comment == null) {
-            result.addMessage("comment cannot be null");
+            result.addMessage("Comment cannot be null", ResultType.INVALID);
             return result;
         }
 
         if (comment.getCommentText() == null || comment.getCommentText().isBlank()) {
-            result.addMessage("commentText is required");
+            result.addMessage("Comment text is required", ResultType.INVALID);
         }
 
         if (comment.getCommentText() != null && comment.getCommentText().length() > 500) {
-            result.addMessage("commentText must be less than 500 characters");
+            result.addMessage("Comment text must be less than 500 characters", ResultType.INVALID);
         }
 
         return result;
     }
-
 }

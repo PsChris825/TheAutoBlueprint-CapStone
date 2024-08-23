@@ -94,3 +94,30 @@ export async function deletePart(id) {
     throw error;
   }
 }
+
+// Fetch parts by carId
+export async function fetchPartsByCarId(carId) {
+  try {
+    const response = await fetch(`${API_URL}/car/${carId}`, { headers: getAuthHeaders() });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch parts for car with id ${carId}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching parts for car with id ${carId}:`, error);
+    throw error;
+  }
+}
+
+export const fetchPartsByCategoryIdAndCarId = async (categoryId, carId) => {
+  try {
+    const response = await fetch(`${API_URL}/category/${categoryId}/car/${carId}`, { headers: getAuthHeaders() });
+    if (!response.ok) {
+      throw new Error('Failed to fetch parts for category and car');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching parts for category and car:', error);
+    throw error;
+  }
+};

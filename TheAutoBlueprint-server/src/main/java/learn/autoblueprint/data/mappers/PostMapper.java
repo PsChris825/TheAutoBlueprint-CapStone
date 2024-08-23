@@ -1,14 +1,11 @@
 package learn.autoblueprint.data.mappers;
 
-import learn.autoblueprint.models.Comment;
 import learn.autoblueprint.models.Post;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PostMapper implements RowMapper<Post> {
 
@@ -17,6 +14,7 @@ public class PostMapper implements RowMapper<Post> {
         Post post = new Post();
         post.setPostId(rs.getInt("post_id"));
         post.setUserId(rs.getInt("user_id"));
+        post.setUsername(rs.getString("username")); // Map the username field
         post.setTitle(rs.getString("title"));
         post.setPostDescription(rs.getString("post_description"));
         post.setImageUrl(rs.getString("image_url"));
@@ -31,8 +29,6 @@ public class PostMapper implements RowMapper<Post> {
                 (updatedAtTimestamp != null) ? updatedAtTimestamp.toLocalDateTime() : null
         );
 
-
         return post;
     }
-
 }

@@ -1,0 +1,20 @@
+/* Import the Fjalla One font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+/* Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+body {
+  font-family: 'Fjalla One', sans-serif;
+  background-color: #f8f9fa; /* Light background for contrast */
+  color: #333; /* Default text color */
+}
+
+.blueprint-text {
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 2rem;
+  color: white;
+}

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class CommentJdbcTemplateRepository implements  CommentRepository {
+public class CommentJdbcTemplateRepository implements CommentRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final CommentMapper commentMapper = new CommentMapper();
@@ -20,15 +20,27 @@ public class CommentJdbcTemplateRepository implements  CommentRepository {
     }
 
     @Override
+    public String getUsernameById(int userId) {
+        final String sql = """
+                select username
+                from app_user
+                where app_user_id = ?;
+                """;
+        return jdbcTemplate.queryForObject(sql, new Object[]{userId}, String.class);
+    }
+
+    @Override
     public List<Comment> findAll() {
         final String sql = """
                 select
-                    comment_id,
-                    post_id,
-                    user_id,
-                    comment_text,
-                    created_at
-                from comment;
+                    c.comment_id,
+                    c.post_id,
+                    c.user_id,
+                    c.comment_text,
+                    c.created_at,
+                    u.username
+                from comment c
+                join app_user u on c.user_id = u.app_user_id;
                 """;
 
         return jdbcTemplate.query(sql, commentMapper);
@@ -38,14 +50,16 @@ public class CommentJdbcTemplateRepository implements  CommentRepository {
     public List<Comment> findByPostId(int postId) {
         final String sql = """
                 select
-                    comment_id,
-                    post_id,
-                    user_id,
-                    comment_text,
-                    created_at
-                from comment
-                where post_id = ?
-                order by created_at;
+                    c.comment_id,
+                    c.post_id,
+                    c.user_id,
+                    c.comment_text,
+                    c.created_at,
+                    u.username
+                from comment c
+                join app_user u on c.user_id = u.app_user_id
+                where c.post_id = ?
+                order by c.created_at;
                 """;
 
         return jdbcTemplate.query(sql, commentMapper, postId);
@@ -55,13 +69,15 @@ public class CommentJdbcTemplateRepository implements  CommentRepository {
     public List<Comment> findByUserId(int userId) {
         final String sql = """
             select
-                comment_id,
-                post_id,
-                user_id,
-                comment_text,
-                created_at
-            from comment
-            where user_id = ?;
+                c.comment_id,
+                c.post_id,
+                c.user_id,
+                c.comment_text,
+                c.created_at,
+                u.username
+            from comment c
+            join app_user u on c.user_id = u.app_user_id
+            where c.user_id = ?;
             """;
 
         return jdbcTemplate.query(sql, commentMapper, userId);
@@ -71,13 +87,15 @@ public class CommentJdbcTemplateRepository implements  CommentRepository {
     public Comment findById(int commentId) {
         final String sql = """
                 select
-                    comment_id,
-                    post_id,
-                    user_id,
-                    comment_text,
-                    created_at
-                from comment
-                where comment_id = ?;
+                    c.comment_id,
+                    c.post_id,
+                    c.user_id,
+                    c.comment_text,
+                    c.created_at,
+                    u.username
+                from comment c
+                join app_user u on c.user_id = u.app_user_id
+                where c.comment_id = ?;
                 """;
 
         return jdbcTemplate.query(sql, commentMapper, commentId).stream().findFirst().orElse(null);
@@ -85,6 +103,7 @@ public class CommentJdbcTemplateRepository implements  CommentRepository {
 
     @Override
     public Comment add(Comment comment) {
+        System.out.println("Received comment: " + comment);
         SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("comment")
                 .usingGeneratedKeyColumns("comment_id");

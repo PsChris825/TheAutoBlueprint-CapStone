@@ -48,7 +48,7 @@ export async function savePost(post) {
         "Content-Type": "application/json",
         ...getAuthHeaders(),
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(post), 
     });
 
     if (!response.ok) {
@@ -99,6 +99,21 @@ export async function deletePost(postId) {
   }
 }
 
+export async function fetchPostWithComments(postId) {
+  try {
+    const response = await fetch(`${API_URL}/${postId}/comments`, {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch post with comments for ID ${postId}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching post with comments for ID ${postId}:`, error);
+    throw error;
+  }
+}
+
 // Fetch comments by post ID
 export async function fetchCommentsByPostId(postId) {
   try {
@@ -124,6 +139,7 @@ export async function saveComment(comment) {
       },
       body: JSON.stringify(comment),
     });
+
     if (!response.ok) {
       throw new Error("Failed to save comment");
     }
@@ -134,26 +150,6 @@ export async function saveComment(comment) {
   }
 }
 
-// Update an existing comment by ID
-export async function updateComment(commentId, comment) {
-  try {
-    const response = await fetch(`${API_URL_C}/${commentId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        ...getAuthHeaders(),
-      },
-      body: JSON.stringify(comment),
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to update comment with id ${commentId}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`Error updating comment with id ${commentId}:`, error);
-    throw error;
-  }
-}
 
 // Delete a comment by ID
 export async function deleteComment(commentId) {
@@ -167,6 +163,21 @@ export async function deleteComment(commentId) {
     }
   } catch (error) {
     console.error(`Error deleting comment with id ${commentId}:`, error);
+    throw error;
+  }
+}
+
+export async function fetchUsernameById(userId) {
+  try {
+    const response = await fetch(`${API_URL_C}/username/${userId}`, {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch username for user ID ${userId}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching username for user ID ${userId}:`, error);
     throw error;
   }
 }

@@ -12,6 +12,8 @@ public interface PartRepository {
 
     Part findById(int partId);
 
+    List<Part> findByCategoryIdAndCarId(int categoryId, int carId);
+
     Part add(Part part);
 
     boolean update(Part part);

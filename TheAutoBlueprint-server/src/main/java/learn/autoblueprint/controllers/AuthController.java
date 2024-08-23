@@ -70,9 +70,13 @@ public class AuthController {
             return new ResponseEntity<>(result.getMessages(), HttpStatus.BAD_REQUEST);
         }
 
-        Map<String, Integer> map = Map.of("appUserId", result.getPayload().getAppUserId());
-        return new ResponseEntity<>(map, HttpStatus.CREATED);
+        // Automatically log in the user by generating a JWT token
+        String jwt = jwtConverter.getTokenFromUser(result.getPayload());
+        Map<String, String> jwtMap = Map.of("jwt_token", jwt);
+
+        return new ResponseEntity<>(jwtMap, HttpStatus.CREATED);
     }
+
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@AuthenticationPrincipal AppUser appUser) {

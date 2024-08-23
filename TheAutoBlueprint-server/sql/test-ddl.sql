@@ -81,6 +81,7 @@ CREATE TABLE part_category (
 CREATE TABLE post (
     post_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
+    username VARCHAR(50), -- Added username column
     title VARCHAR(255),
     post_description TEXT,
     image_url VARCHAR(255),
@@ -92,9 +93,12 @@ CREATE TABLE `comment` (
     comment_id INT PRIMARY KEY AUTO_INCREMENT,
     post_id INT REFERENCES post(post_id) ON DELETE CASCADE,
     user_id INT REFERENCES app_user(app_user_id) ON DELETE CASCADE,
+    username VARCHAR(50), -- Added username column
     comment_text TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+USE auto_blueprint_test;
 
 DELIMITER //
 
@@ -158,13 +162,13 @@ BEGIN
         (1, 1, 'Plan 1', 'Basic Upgrades', 10, 5000.00, 1200.00, 3800.00),
         (2, 2, 'Plan 2', 'Performance Mods', 20, 10000.00, 8000.00, 2000.00);
 
-    INSERT INTO post (user_id, title, post_description, image_url) VALUES
-        (1, 'My Car Mods', 'Check out the mods I did on my car', 'http://example.com/car1.jpg'),
-        (2, 'Upgraded Mustang', 'Performance upgrades for my Mustang', 'http://example.com/car2.jpg');
+    INSERT INTO post (user_id, username, title, post_description, image_url) VALUES
+        (1, 'john@smith.com', 'My Car Mods', 'Check out the mods I did on my car', 'http://example.com/car1.jpg'),
+        (2, 'sally@jones.com', 'Upgraded Mustang', 'Performance upgrades for my Mustang', 'http://example.com/car2.jpg');
 
-    INSERT INTO `comment` (post_id, user_id, comment_text) VALUES
-        (1, 2, 'Nice work!'),
-        (2, 1, 'Great upgrades!');
+    INSERT INTO `comment` (post_id, user_id, username, comment_text) VALUES
+        (1, 2, 'sally@jones.com', 'Nice work!'),
+        (2, 1, 'john@smith.com', 'Great upgrades!');
 END //
 
 DELIMITER ;

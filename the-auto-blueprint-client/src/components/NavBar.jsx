@@ -1,53 +1,80 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faCar, faComments, faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import logo from '../Images/The_Auto_Blueprint.png'; 
 
 const NavBar = () => {
   const { principal, logout } = React.useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
-    <aside className="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-      <div className="p-6">
+    <aside className="h-screen w-64 hidden sm:block shadow-lg" style={{ backgroundColor: '#7AA6D3' }}>
+      <div className="p-6 flex items-center justify-center">
         <NavLink to="/">
           <img
-            src="./car-logo-free-vector.jpg"
+            src={logo}
             alt="Logo"
-            className="w-56 h-auto"
+            className="w-48 h-auto"
           />
         </NavLink>
       </div>
-      <nav className="text-blue-900 text-base font-semibold pt-3">
-        {/* Conditional Navigation Links */}
+      <nav className="text-white text-base font-medium pt-3 space-y-4">
         {principal ? (
           <>
             <NavLink
-              className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+              className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out"
               to="/profile"
             >
+              <FontAwesomeIcon icon={faUser} className="w-6 h-6 mr-3" />
               Profile
             </NavLink>
+            <button
+              onClick={handleLogout}
+              className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out w-full text-left"
+            >
+              <FontAwesomeIcon icon={faSignInAlt} className="w-6 h-6 mr-3" />
+              Logout
+            </button>
           </>
         ) : (
-          <NavLink
-            className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-            to="/login"
-          >
-            Login
-          </NavLink>
+          <>
+            <NavLink
+              className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out"
+              to="/login"
+            >
+              <FontAwesomeIcon icon={faSignInAlt} className="w-6 h-6 mr-3" />
+              Login
+            </NavLink>
+            <NavLink
+              className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out"
+              to="/signup"
+            >
+              <FontAwesomeIcon icon={faUserPlus} className="w-6 h-6 mr-3" />
+              Register
+            </NavLink>
+          </>
         )}
 
-        {/* Common Navigation Links */}
         <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
+          className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out"
           to="/modification-list"
         >
-          View Current Modification Plans
+          <FontAwesomeIcon icon={faCar} className="w-6 h-6 mr-3" />
+          Your Blueprints
         </NavLink>
 
         <NavLink
-          className="flex items-center opacity-75 hover:opacity-100 py-4 pl-6 nav-item mt-6"
+          className="flex items-center hover:bg-blue-800 py-4 pl-6 transition-all duration-200 ease-in-out"
           to="/post-list"
         >
+          <FontAwesomeIcon icon={faComments} className="w-6 h-6 mr-3" />
           Forum
         </NavLink>
       </nav>

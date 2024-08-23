@@ -8,6 +8,7 @@ public class Post {
 
     private Integer postId;
     private Integer userId;
+    private String username; // New field to store the username
     private String title;
     private String postDescription;
     private String imageUrl;
@@ -17,9 +18,10 @@ public class Post {
 
     public Post() {}
 
-    public Post(Integer postId, Integer userId, String title, String postDescription, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> comments) {
+    public Post(Integer postId, Integer userId, String username, String title, String postDescription, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt, List<Comment> comments) {
         this.postId = postId;
         this.userId = userId;
+        this.username = username; // Initialize the username field
         this.title = title;
         this.postDescription = postDescription;
         this.imageUrl = imageUrl;
@@ -43,6 +45,14 @@ public class Post {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() { // New getter for username
+        return username;
+    }
+
+    public void setUsername(String username) { // New setter for username
+        this.username = username;
     }
 
     public String getTitle() {
@@ -98,11 +108,19 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(postId, post.postId) && Objects.equals(userId, post.userId) && Objects.equals(title, post.title) && Objects.equals(postDescription, post.postDescription) && Objects.equals(imageUrl, post.imageUrl) && Objects.equals(createdAt, post.createdAt) && Objects.equals(updatedAt, post.updatedAt) && Objects.equals(comments, post.comments);
+        return Objects.equals(postId, post.postId) &&
+                Objects.equals(userId, post.userId) &&
+                Objects.equals(username, post.username) && // Updated equals method
+                Objects.equals(title, post.title) &&
+                Objects.equals(postDescription, post.postDescription) &&
+                Objects.equals(imageUrl, post.imageUrl) &&
+                Objects.equals(createdAt, post.createdAt) &&
+                Objects.equals(updatedAt, post.updatedAt) &&
+                Objects.equals(comments, post.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(postId, userId, title, postDescription, imageUrl, createdAt, updatedAt, comments);
+        return Objects.hash(postId, userId, username, title, postDescription, imageUrl, createdAt, updatedAt, comments); // Updated hashCode method
     }
 }

@@ -43,6 +43,11 @@ public class PartController {
         return ResponseEntity.ok(parts);
     }
 
+    @GetMapping("/category/{categoryId}/car/{carId}")
+    public List<Part> findByCategoryIdAndCarId(@PathVariable int categoryId, @PathVariable int carId) {
+        return service.findByCategoryIdAndCarId(categoryId, carId);
+    }
+
     @PostMapping
     public ResponseEntity<Result<Part>> add(@RequestBody Part part) {
         Result<Part> result = service.add(part);

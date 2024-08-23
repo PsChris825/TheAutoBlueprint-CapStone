@@ -52,4 +52,9 @@ public class PostController {
     public boolean deleteById(@PathVariable int postId) {
         return service.deleteById(postId);
     }
+
+    @GetMapping("/username/{userId}")
+    public String getUsernameById(@PathVariable int userId) {
+        return service.getUsernameById(userId);
+    }
 }

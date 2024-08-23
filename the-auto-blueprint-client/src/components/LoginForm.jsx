@@ -33,34 +33,37 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="username" className="block text-gray-700">Username:</label>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          value={credentials.username}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-      </div>
-      <div>
-        <label htmlFor="password" className="block text-gray-700">Password:</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={credentials.password}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-      </div>
-      {errors.length > 0 && <Errors errors={errors} />}
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
-        Login
-      </button>
-    </form>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login to Your Account</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="username" className="block text-gray-700 font-semibold">Email:</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value={credentials.username}
+            onChange={handleChange}
+            className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-gray-700 font-semibold">Password:</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={credentials.password}
+            onChange={handleChange}
+            className="border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        {errors.length > 0 && <Errors errors={errors} />}
+        <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition duration-200">
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

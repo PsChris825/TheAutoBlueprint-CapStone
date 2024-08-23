@@ -11,6 +11,8 @@ public interface PostRepository {
 
     List<Post> findByUserId(int userId);
 
+    String getUsernameById(int userId);
+
     List<Comment> findCommentsByPostId(int postId);
 
     Post add(Post post);

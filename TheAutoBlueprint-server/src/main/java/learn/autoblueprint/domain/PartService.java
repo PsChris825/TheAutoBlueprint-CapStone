@@ -39,6 +39,10 @@ public class PartService {
         return partRepository.findByCategoryId(categoryId);
     }
 
+    public List<Part> findByCategoryIdAndCarId(int categoryId, int carId) {
+        return partRepository.findByCategoryIdAndCarId(categoryId, carId);
+    }
+
     public Result<Part> add(Part part) {
         Result<Part> result = validate(part);
         if (!result.isSuccess()) {

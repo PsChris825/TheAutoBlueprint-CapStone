@@ -13,9 +13,9 @@ const PlanPartForm = () => {
     planId: planId || '',
     partId: '',
     price: '',
+    timeToInstall: '',
     tutorialUrl: '',
     supplierUrl: '',
-    timeToInstall: ''
   });
   const [categories, setCategories] = useState([]);
   const [parts, setParts] = useState([]);
@@ -72,11 +72,9 @@ const PlanPartForm = () => {
     e.preventDefault();
     try {
       if (planPart.planPartId) {
-        // Update existing plan part
         await updatePlanPart(planPart.planPartId, planPart);
         setSuccessMessage('Plan part successfully updated!');
       } else {
-        // Create new plan part
         await savePlanPart(planPart);
         setSuccessMessage('Plan part successfully saved!');
       }
@@ -105,22 +103,19 @@ const PlanPartForm = () => {
   };
 
   return (
-    <div>
-      <h1>{planPartId ? 'Edit Plan Part' : 'Add New Plan Part'}</h1>
-      {successMessage && <p className="text-green-500">{successMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Plan ID:
-          <input
-            type="number"
-            name="planId"
-            value={planPart.planId}
-            readOnly
-          />
-        </label>
-        <label>
-          Category:
-          <select value={selectedCategory} onChange={handleCategoryChange}>
+    <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-[#5894CD] mb-6">
+        {planPartId ? 'Edit Plan Part' : 'Add New Plan Part'}
+      </h1>
+      {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-700 font-semibold">Category:</label>
+          <select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
+          >
             <option value="">Select a category</option>
             {categories.map(cat => (
               <option key={cat.categoryId} value={cat.categoryId}>
@@ -128,10 +123,14 @@ const PlanPartForm = () => {
               </option>
             ))}
           </select>
-        </label>
-        <label>
-          Part:
-          <select value={planPart.partId} onChange={(e) => handlePartSelect(e.target.value)}>
+        </div>
+        <div>
+          <label className="block text-gray-700 font-semibold">Part:</label>
+          <select
+            value={planPart.partId}
+            onChange={(e) => handlePartSelect(e.target.value)}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
+          >
             <option value="">Select a part</option>
             {parts.map(part => (
               <option key={part.partId} value={part.partId}>
@@ -139,48 +138,71 @@ const PlanPartForm = () => {
               </option>
             ))}
           </select>
-          <button type="button" onClick={handleNewPart}>
+          <button
+            type="button"
+            onClick={handleNewPart}
+            className="mt-2 text-[#5894CD] hover:text-blue-700 transition duration-200"
+          >
             Add New Part
           </button>
-        </label>
-        <label>
-          Price:
+        </div>
+        <div>
+          <label className="block text-gray-700 font-semibold">Price:</label>
           <input
             type="number"
             step="0.01"
             name="price"
             value={planPart.price}
             onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
           />
-        </label>
-        <label>
-          Tutorial URL:
+        </div>
+        <div>
+          <label className="block text-gray-700 font-semibold">Time to Install (hours):</label>
+          <input
+            type="number"
+            step="0.1"
+            name="timeToInstall"
+            value={planPart.timeToInstall}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
+          />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-gray-700 font-semibold">Tutorial URL:</label>
           <input
             type="text"
             name="tutorialUrl"
             value={planPart.tutorialUrl}
             onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
           />
-        </label>
-        <label>
-          Supplier URL:
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-gray-700 font-semibold">Supplier URL:</label>
           <input
             type="text"
             name="supplierUrl"
             value={planPart.supplierUrl}
             onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#5894CD] focus:border-[#5894CD]"
           />
-        </label>
-        <label>
-          Time to Install (minutes):
-          <input
-            type="number"
-            name="timeToInstall"
-            value={planPart.timeToInstall}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Save</button>
+        </div>
+        <div className="md:col-span-2 flex justify-end space-x-4 mt-6">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(`/modification-plan/${planId}/details`)}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-200"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
 
       <Modal isOpen={showPartFormModal} onClose={() => setShowPartFormModal(false)}>

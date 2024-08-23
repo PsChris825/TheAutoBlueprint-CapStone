@@ -53,7 +53,6 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/car/{id}").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/car/{id}").hasAuthority("ADMIN")
 
-
                 .antMatchers(HttpMethod.POST, "/api/part-category").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/part-category").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/part-category/*").permitAll()
@@ -81,17 +80,20 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/parts/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/parts/*").hasAuthority("ADMIN")
 
+                // Comments
                 .antMatchers(HttpMethod.GET, "/api/comments").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/comments/post/*").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/comments/post/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/comments/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/comments/user/*").permitAll() // New endpoint
                 .antMatchers(HttpMethod.POST, "/api/comments").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/comments/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/comments/*").hasAuthority("ADMIN")
 
+                // Posts
                 .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/{postId}/comments*").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts/user/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/user/*").permitAll() // New endpoint
                 .antMatchers(HttpMethod.POST, "/api/posts").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/posts/*").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/posts/*").hasAuthority("ADMIN")
@@ -99,6 +101,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/external-car/**").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/security/refresh").authenticated()
+                .antMatchers(HttpMethod.POST, "/security/register").permitAll()
 
                 .anyRequest().denyAll()
                 .and()
